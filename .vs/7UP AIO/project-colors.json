@@ -1,0 +1,16 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "f71a4bb5-2bf8-43e6-9880-7cec2c676b7f": {
+      "ProjectGuid": "f71a4bb5-2bf8-43e6-9880-7cec2c676b7f",
+      "DisplayName": "7UP AIO",
+      "ColorIndex": 0
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
+    }
+  },
+  "NextColorIndex": 1
+}
