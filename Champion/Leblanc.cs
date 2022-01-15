@@ -26,6 +26,7 @@ namespace AIO7UP.Champions
         public static Spell Ignite;
         public static Item DFG;
 
+
         public static void OnGameLoad()
         {
             if (!Player.CharacterName.Contains("Leblanc")) return;
@@ -43,7 +44,7 @@ namespace AIO7UP.Champions
 
             var MenuRyze = new Menu("Leblanc", "[7UP]Leblanc", true);
             ComboMenu = new Menu("Combo Settings", "Combo");
-            ComboMenu.Add(new MenuList("ComboMode", "Combo Mode: ", new[] { "Q+R+W+E", "Q+W+R+E" }, 0)).Permashow();
+            ComboMenu.Add(new MenuList("ComboMode", "Combo Mode: ", new[] { "Q+R+W+E", "Q+W+R+E", "W+Q+R+E" }, 0)).Permashow();
             ComboMenu.Add(new MenuBool("UseQCombo", "Use Q").SetValue(true));
             ComboMenu.Add(new MenuBool("UseWCombo", "Use W").SetValue(true));
             ComboMenu.Add(new MenuBool("UseECombo", "Use E").SetValue(true));
@@ -166,6 +167,9 @@ namespace AIO7UP.Champions
                     break;
                 case 1:
                     Combo2();
+                    break;
+                case 2:
+                    Combo3();
                     break;
             }
         }
@@ -353,6 +357,107 @@ namespace AIO7UP.Champions
                 }
             }
         }
+
+        private static void Combo3() // W+Q+R+E
+        {
+            var qTarget = TargetSelector.GetTarget(Q.Range, DamageType.Magical);
+            var wTarget = TargetSelector.GetTarget(W.Range, DamageType.Magical);
+            var rTarget = TargetSelector.GetTarget(Q.Range, DamageType.Magical);
+            var eTarget = TargetSelector.GetTarget(E.Range, DamageType.Magical);
+            var comboDamage = wTarget != null ? GetComboDamage(wTarget) : 0;
+
+            var useQ = ComboMenu["UseQCombo"].GetValue<MenuBool>().Enabled;
+            var useW = ComboMenu["UseWCombo"].GetValue<MenuBool>().Enabled;
+            var useE = ComboMenu["UseECombo"].GetValue<MenuBool>().Enabled;
+            var useR = ComboMenu["UseRCombo"].GetValue<MenuBool>().Enabled;
+
+
+            if (W.IsReady() && useW && !LeblancPulo())
+            {
+                if (wTarget != null)
+                    W.CastOnUnit(wTarget);
+            }
+
+            if (Q.IsReady() && useQ)
+            {
+                if (qTarget != null)
+                {
+                    Q.CastOnUnit(qTarget);
+
+
+                    if (Player.Spellbook.GetSpell(SpellSlot.R).Name.Contains("LeblancChaos"))
+                    {
+                        R.CastOnUnit(qTarget);
+                    }
+                }
+            }
+
+            if (R.IsReady() && useR)
+
+            {
+                if (rTarget != null)
+                    R.CastOnUnit(qTarget);
+                if (Player.Spellbook.GetSpell(SpellSlot.R).Name.Contains("LeblancChaos") && !LeblancPulo())
+                {
+                    R.CastOnUnit(qTarget);
+                }
+            }
+            if (E.IsReady() && useE)
+            {
+                PredictionOutput ePred = E.GetPrediction(eTarget);
+                if (ePred.Hitchance >= HitChance.High)
+                    E.Cast(ePred.CastPosition);
+                
+            }
+            else
+            {
+
+                if (useE && eTarget != null && E.IsReady())
+                {
+                    PredictionOutput ePred = E.GetPrediction(eTarget);
+                    if (ePred.Hitchance >= HitChance.High)
+                        E.Cast(ePred.CastPosition);
+                }
+                if (R.IsReady() && useR && !LeblancPulo())
+
+                {
+                    if (rTarget != null)
+                        R.CastOnUnit(rTarget);
+                    if (Player.Spellbook.GetSpell(SpellSlot.R).Name.Contains("LeblancChaos"))
+                    {
+                        R.CastOnUnit(eTarget);
+                    }
+                }
+
+                if (useW && wTarget != null && W.IsReady() && !LeblancPulo())
+                {
+                    W.CastOnUnit(wTarget);
+                }
+
+                if (useQ && qTarget != null && Q.IsReady())
+                {
+                    Q.CastOnUnit(qTarget);
+                }
+
+                if (useR && qTarget != null && R.IsReady() && (Player.Spellbook.GetSpell(SpellSlot.R).Name.Contains("LeblancChaos") ||
+                                                               Player.Spellbook.GetSpell(SpellSlot.R).Name.Contains("LeblancSlideM")))
+                {
+                    R.Cast(qTarget);
+                }
+
+                if (ComboMenu["BackCombo"].GetValue<MenuBool>().Enabled && LeblancPulo() && (qTarget == null ||
+                    !W.IsReady() && !Q.IsReady() && !R.IsReady() ||
+                    GetHPPercent() < 30 ||
+                    GetMPPercent() < 30))
+                {
+                    W.Cast();
+                }
+            }
+
+        }
+
+
+
 
         private static float GetHPPercent()
         {
