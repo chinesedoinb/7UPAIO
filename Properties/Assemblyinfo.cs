@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("7UP-Vayne")]
+[assembly: AssemblyTitle("7UP AIO")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("7UP")]
-[assembly: AssemblyProduct("7UP")]
+[assembly: AssemblyCompany("7UP AIO")]
+[assembly: AssemblyProduct("7UP AIO")]
 [assembly: AssemblyCopyright("Copyright ©  2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
