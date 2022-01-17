@@ -67,7 +67,7 @@ namespace AIO7UP.Champions
             WMenu.Add(new MenuBool("Wks", "W KS"));
             WMenu.Add(new MenuList("Wts", "Harass mode", new[] { "Target selector", "All in range" }, 0));
             WMenu.Add(new MenuList("Wmode", "W mode", new[] { "Out range MiniGun", "Out range FishBone", "Custome range" }, 0));
-            WMenu.Add(new MenuSlider("Wcustome", "Custome minimum range", 600, 1500, 0));
+            WMenu.Add(new MenuSlider("Wcustome", "Custome minimum range", 600, 0, 1500));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
                 WMenu.Add(new MenuBool("harassW", "Harass W enemy:" + enemy.CharacterName));
             WMenu.Add(new MenuSlider("WmanaCombo", "W combo mana", 20, 0, 100));
@@ -181,15 +181,15 @@ namespace AIO7UP.Champions
         private static void Gapcloser_OnGapcloser(AIHeroClient sender, AntiGapcloser.GapcloserArgs args)
         {
             {
-                if (Player.ManaPercent < EMenu["EmanaCombo"].GetValue<MenuSlider>().Value)
+                if (Player.ManaPercent < EMenu["EmanaCombo"].GetValue<MenuSlider>().Value && E.IsReady())
                     return;
 
                 if (E.IsReady())
                 {
                     var t = sender;
-                    if (t.IsValidTarget(E.Range) && EMenu["EGCchampion" + t.CharacterName].GetValue<MenuBool>().Enabled)
+                    if (t.IsValidTarget(E.Range) && EMenu["EGCchampion" + t.CharacterName].GetValue<MenuBool>().Enabled && E.IsReady())
                     {
-                        if (EMenu["EmodeGC"].GetValue<MenuList>().Index == 0)
+                        if (EMenu["EmodeGC"].GetValue<MenuList>().Index == 0 && E.IsReady())
                             E.Cast(t);
                         else
                             E.Cast(Player.Position);
@@ -259,20 +259,15 @@ namespace AIO7UP.Champions
 
         private static void Rlogic()
         {
-            var Rready = R.IsReady();
-            var useR = RMenu["useR"].GetValue<MenuKeyBind>().Active;
-            var semiMode = RMenu["semiMode"].GetValue<MenuList>().Index;
-            var Rks = RMenu["Rks"].GetValue<MenuBool>().Enabled;
-            var RoverAA = RMenu["RoverAA"].GetValue<MenuBool>().Enabled;
 
             R.Range = RMenu["RcustomeMax"].GetValue<MenuSlider>().Value;
 
-            if (useR && Rready)
+            if (RMenu["useR"].GetValue<MenuKeyBind>().Active && R.IsReady())
             {
                 var t = TargetSelector.GetTarget(R.Range, DamageType.Physical);
                 if (t.IsValidTarget())
                 {
-                    if (semiMode == 0)
+                    if (RMenu["semiMode"].GetValue<MenuList>().Index == 0 && R.IsReady())
                     {
                         R.Cast(t);
                     }
@@ -284,12 +279,12 @@ namespace AIO7UP.Champions
                 }
             }
 
-            if (Rks && Rready)
+            if (RMenu["Rks"].GetValue<MenuBool>().Enabled && R.IsReady())
             {
                 bool cast = false;
 
 
-                if (RoverAA && (!Orbwalker.CanAttack() || Player.Spellbook.IsAutoAttack))
+                if (RMenu["RoverAA"].GetValue<MenuBool>().Enabled && (!Orbwalker.CanAttack() || Player.Spellbook.IsAutoAttack) && R.IsReady())
                     return;
 
                 foreach (var target in Enemies.Where(target => target.IsValidTarget(R.Range) ))
@@ -334,10 +329,10 @@ namespace AIO7UP.Champions
                             if (RMenu["RoverW"].GetValue<MenuBool>().Enabled && target.IsValidTarget(W.Range) && W.GetDamage(target) > target.Health && W.Instance.Cooldown - (W.Instance.CooldownExpires - Game.Time) < 1.1)
                                 return;
 
-                            if (target.CountEnemyHeroesInRange(400) > RMenu["Raoe"].GetValue<MenuSlider>().Value && Rready)
+                            if (target.CountEnemyHeroesInRange(400) > RMenu["Raoe"].GetValue<MenuSlider>().Value && R.IsReady())
                                 R.Cast(target);
 
-                            if (RValidRange(target) && target.CountAllyHeroesInRange(RMenu["Rover"].GetValue<MenuSlider>().Value) == 0 && Rready)
+                            if (RValidRange(target) && target.CountAllyHeroesInRange(RMenu["Rover"].GetValue<MenuSlider>().Value) == 0 && R.IsReady())
                                 R.Cast(target);
                         }
                     }
@@ -377,8 +372,8 @@ namespace AIO7UP.Champions
 
         private static void Elogic()
         {
-            var EReady = E.IsReady();
-            if (Player.ManaPercent < EMenu["EmanaCombo"].GetValue<MenuSlider>().Value && EReady)
+            
+            if (Player.ManaPercent < EMenu["EmanaCombo"].GetValue<MenuSlider>().Value && E.IsReady())
                 return;
 
             if (blitz != null && blitz.Distance(Player.Position) < E.Range)
@@ -390,26 +385,26 @@ namespace AIO7UP.Champions
                 }
             }
 
-            foreach (var enemy in Enemies.Where(enemy => enemy.IsValidTarget(E.Range) && EReady))
+            foreach (var enemy in Enemies.Where(enemy => enemy.IsValidTarget(E.Range) && E.IsReady()))
             {
 
                 E.CastIfWillHit(enemy, EMenu["Eaoe"].GetValue<MenuSlider>().Value);
 
-                if (EMenu["Ecc"].GetValue<MenuBool>().Enabled && EReady)
+                if (EMenu["Ecc"].GetValue<MenuBool>().Enabled && E.IsReady())
                 {
                     if (!Orbwalker.CanMove())
                         E.Cast(enemy.Position);
                     E.CastIfHitchanceEquals(enemy, HitChance.Immobile);
                 }
 
-                if (enemy.MoveSpeed < 250 && EMenu["Eslow"].GetValue<MenuBool>().Enabled && EReady)
+                if (enemy.MoveSpeed < 250 && EMenu["Eslow"].GetValue<MenuBool>().Enabled && E.IsReady())
                     E.Cast(enemy);
-                if (EMenu["Edash"].GetValue<MenuBool>().Enabled && EReady)
+                if (EMenu["Edash"].GetValue<MenuBool>().Enabled && E.IsReady())
                     E.CastIfHitchanceEquals(enemy, HitChance.Dash);
             }
 
 
-            if (EMenu["Etel"].GetValue<MenuBool>().Enabled && EReady)
+            if (EMenu["Etel"].GetValue<MenuBool>().Enabled && E.IsReady())
             {
                 foreach (var Object in ObjectManager.Get<AIBaseClient>().Where(Obj => Obj.IsEnemy && Obj.Distance(Player.Position) < E.Range && (Obj.HasBuff("teleport_target") || Obj.HasBuff("Pantheon_GrandSkyfall_Jump"))))
                 {
@@ -417,7 +412,7 @@ namespace AIO7UP.Champions
                 }
             }
 
-            if (Combo && Player.IsMoving && EMenu["Ecombo"].GetValue<MenuBool>().Enabled && EReady)
+            if (Combo && Player.IsMoving && EMenu["Ecombo"].GetValue<MenuBool>().Enabled && E.IsReady())
             {
                 var t = TargetSelector.GetTarget(E.Range, DamageType.Magical);
                 if (t.IsValidTarget(E.Range) && E.GetPrediction(t).CastPosition.Distance(t.Position) > 200)
@@ -440,9 +435,9 @@ namespace AIO7UP.Champions
         {
             var range = GetRealDistance(t);
             var Wmode = WMenu["Wmode"].GetValue<MenuList>().Index;
-            var WReady = R.IsReady();
+            
 
-            if (Wmode == 0 && WReady)
+            if (Wmode == 0 && W.IsReady())
             {
                 if (range > GetRealPowPowRange(t) && Player.CountEnemyHeroesInRange(GetRealPowPowRange(t)) == 0)
                     return true;
@@ -450,16 +445,16 @@ namespace AIO7UP.Champions
                     return false;
 
             }
-            else if (Wmode == 1 && WReady)
+            else if (Wmode == 1 && W.IsReady())
             {
                 if (range > Q.Range + 50 && Player.CountEnemyHeroesInRange(Q.Range + 50) == 0)
                     return true;
                 else
                     return false;
             }
-            else if (Wmode == 2 && WReady)
+            else if (Wmode == 2 && W.IsReady())
             {
-                if (range > WMenu["Wcustome"].GetValue<MenuSlider>().Value && Player.CountEnemyHeroesInRange(WMenu["Wcustome"].GetValue<MenuSlider>().Value) == 0 && WReady)
+                if (range > WMenu["Wcustome"].GetValue<MenuSlider>().Value && Player.CountEnemyHeroesInRange(WMenu["Wcustome"].GetValue<MenuSlider>().Value) == 0 && W.IsReady())
                     return true;
                 else
                     return false;
@@ -471,28 +466,28 @@ namespace AIO7UP.Champions
         private static void Wlogic()
         {
             var t = TargetSelector.GetTarget(W.Range, DamageType.Physical);
-            var WReady = W.IsReady();
+            
             if (t.IsValidTarget() && WValidRange(t))
             {
-                if (WMenu["Wks"].GetValue<MenuBool>().Enabled && GetKsDamage(t, W) > t.Health && WReady)
+                if (WMenu["Wks"].GetValue<MenuBool>().Enabled && GetKsDamage(t, W) > t.Health && W.IsReady())
                 {
                     W.Cast(t);
                 }
 
-                if (Combo && WReady && WMenu["Wcombo"].GetValue<MenuBool>().Enabled && Player.ManaPercent > WMenu["WmanaCombo"].GetValue<MenuSlider>().Value)
+                if (Combo && W.IsReady() && WMenu["Wcombo"].GetValue<MenuBool>().Enabled && Player.ManaPercent > WMenu["WmanaCombo"].GetValue<MenuSlider>().Value)
                 {
                     W.Cast(t);
                 }
-                else if (Farm && Orbwalker.CanAttack() && WReady && !Player.Spellbook.IsAutoAttack && WMenu["Wharass"].GetValue<MenuBool>().Enabled && Player.ManaPercent > WMenu["WmanaHarass"].GetValue<MenuSlider>().Value)
+                else if (Farm && Orbwalker.CanAttack() && W.IsReady() && !Player.Spellbook.IsAutoAttack && WMenu["Wharass"].GetValue<MenuBool>().Enabled && Player.ManaPercent > WMenu["WmanaHarass"].GetValue<MenuSlider>().Value)
                 {
-                    if (WReady && WMenu["Wts"].GetValue<MenuList>().Index == 0)
+                    if (W.IsReady() && WMenu["Wts"].GetValue<MenuList>().Index == 0)
                     {
                         if (WMenu["harassW" + t.CharacterName].GetValue<MenuBool>().Enabled)
                             W.Cast(t);
                     }
                     else
                     {
-                        foreach (var enemy in Enemies.Where(enemy => enemy.IsValidTarget(W.Range) && WValidRange(t) && WReady && WMenu["harassW" + t.CharacterName].GetValue<MenuBool>().Enabled))
+                        foreach (var enemy in Enemies.Where(enemy => enemy.IsValidTarget(W.Range) && WValidRange(t) && W.IsReady() && WMenu["harassW" + t.CharacterName].GetValue<MenuBool>().Enabled))
                             W.Cast(t);
                     }
                 }
@@ -627,14 +622,14 @@ namespace AIO7UP.Champions
         private static void SetValues()
         {
             if (WMenu["Wmode"].GetValue<MenuList>().Index == 2)
-                WMenu["Wcustome"].GetValue<MenuSlider>().Value = 600;
-            else
                 WMenu["Wcustome"].GetValue<MenuSlider>().Value = 1500;
+            else
+                WMenu["Wcustome"].GetValue<MenuSlider>().Value = 600;
 
             if (RMenu["Rmode"].GetValue<MenuList>().Index == 2)
-                RMenu["Rcustome"].GetValue<MenuSlider>().Value = 1000;
-            else
                 RMenu["Rcustome"].GetValue<MenuSlider>().Value = 1600;
+            else
+                RMenu["Rcustome"].GetValue<MenuSlider>().Value = 1000;
 
 
             if (Player.HasBuff("JinxQ"))
