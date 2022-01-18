@@ -62,6 +62,7 @@ namespace AIO7UP.Champions
             QMenu.Add(new MenuSlider("QmanaLC", "Q lane clear mana", 80, 0, 100));
             MenuRyze.Add(QMenu);
             WMenu = new Menu("WMenu", "WMenu");
+            WMenu.Add(new MenuKeyBind("useW", "Semi cast W key", Keys.S, KeyBindType.Press));
             WMenu.Add(new MenuBool("Wcombo", "Combo W"));
             WMenu.Add(new MenuBool("Wharass", "W harass"));
             WMenu.Add(new MenuBool("Wks", "W KS"));
@@ -75,6 +76,7 @@ namespace AIO7UP.Champions
             MenuRyze.Add(WMenu);
             EMenu = new Menu("EMenu", "EMenu");
             EMenu.Add(new MenuBool("Ecombo", "Combo E"));
+            EMenu.Add(new MenuKeyBind("useE", "Semi cast E key", Keys.G, KeyBindType.Press));
             EMenu.Add(new MenuBool("Etel", "E on enemy teleport"));
             EMenu.Add(new MenuBool("Ecc", "E on CC"));
             EMenu.Add(new MenuBool("Eslow", "E on slow"));
@@ -88,7 +90,7 @@ namespace AIO7UP.Champions
             EMenu.Add(new MenuSlider("EmanaCombo", "E mana", 30, 0, 100));
             MenuRyze.Add(EMenu);
             RMenu = new Menu("RMenu", "RMenu");
-            RMenu.Add(new MenuSeparator("Rks", "R KS"));
+            RMenu.Add(new MenuBool("Rks", "R KS"));
             RMenu.Add(new MenuKeyBind("useR", "Semi-manual cast R key", Keys.T, KeyBindType.Press));
             RMenu.Add(new MenuList("semiMode", "Semi-manual cast mode", new[] { "Low hp target", "AOE" }, 0));
             RMenu.Add(new MenuList("Rmode", "R mode", new[] { "Out range MiniGun ", "Out range FishBone ", "Custome range " }, 0));
@@ -181,13 +183,11 @@ namespace AIO7UP.Champions
         private static void Gapcloser_OnGapcloser(AIHeroClient sender, AntiGapcloser.GapcloserArgs args)
         {
             {
-                if (Player.ManaPercent < EMenu["EmanaCombo"].GetValue<MenuSlider>().Value && E.IsReady())
-                    return;
 
                 if (E.IsReady())
                 {
                     var t = sender;
-                    if (t.IsValidTarget(E.Range) && EMenu["EGCchampion" + t.CharacterName].GetValue<MenuBool>().Enabled && E.IsReady())
+                    if (t.IsValidTarget(E.Range) && EMenu["EGCchampion" + t.CharacterName].GetValue<MenuBool>().Enabled)
                     {
                         if (EMenu["EmodeGC"].GetValue<MenuList>().Index == 0 && E.IsReady())
                             E.Cast(t);
@@ -372,8 +372,36 @@ namespace AIO7UP.Champions
 
         private static void Elogic()
         {
-            
-            if (Player.ManaPercent < EMenu["EmanaCombo"].GetValue<MenuSlider>().Value && E.IsReady())
+
+            if (EMenu["useE"].GetValue<MenuKeyBind>().Active && E.IsReady())
+            {
+                var t = TargetSelector.GetTarget(E.Range, DamageType.Physical);
+                if (t.IsValidTarget() && blitz != null && blitz.Distance(Player.Position) < E.Range)
+                {
+                    E.Cast(t);
+                }
+                else
+                {
+                    foreach (var enemy in Enemies.Where(enemy => enemy.IsValidTarget(2000) && enemy.HasBuff("RocketGrab")))
+                    {
+                        E.Cast(blitz.Position.Extend(enemy.Position, 30));
+                        return;
+                        if (!Orbwalker.CanMove())
+                        {
+                            E.Cast(enemy.Position);
+                            E.CastIfHitchanceEquals(enemy, HitChance.Immobile);
+                        }
+                    }
+                    foreach (var Object in ObjectManager.Get<AIBaseClient>().Where(Obj => Obj.IsEnemy && Obj.Distance(Player.Position) < E.Range && (Obj.HasBuff("teleport_target") || Obj.HasBuff("Pantheon_GrandSkyfall_Jump"))))
+                    {
+                        E.Cast(Object.Position);
+                    }
+
+
+                }
+
+            }
+                    if (Player.ManaPercent < EMenu["EmanaCombo"].GetValue<MenuSlider>().Value && E.IsReady())
                 return;
 
             if (blitz != null && blitz.Distance(Player.Position) < E.Range)
@@ -466,7 +494,12 @@ namespace AIO7UP.Champions
         private static void Wlogic()
         {
             var t = TargetSelector.GetTarget(W.Range, DamageType.Physical);
-            
+
+            if (WMenu["useW"].GetValue<MenuKeyBind>().Active && W.IsReady())
+            {
+                W.Cast(t);
+            }
+
             if (t.IsValidTarget() && WValidRange(t))
             {
                 if (WMenu["Wks"].GetValue<MenuBool>().Enabled && GetKsDamage(t, W) > t.Health && W.IsReady())

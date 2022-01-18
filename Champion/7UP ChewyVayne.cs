@@ -105,7 +105,7 @@ namespace AIO7UP.Champions
         private static void Orbwalker_OnAfterAttack(object sender, AfterAttackEventArgs args)
         {
             var t = args.Target as AIHeroClient;
-
+            var t2 = TargetSelector.GetTarget(E.Range, DamageType.Physical);
             if (t != null)
             {
                 if (E.IsReady() && condemnMenu["EKS"].GetValue<MenuBool>().Enabled)
@@ -119,7 +119,7 @@ namespace AIO7UP.Champions
 
                     if (dmgE > t.Health)
                     {
-                        E.Cast(t);
+                        E.Cast(t2);
                     }
                 }
 
@@ -257,7 +257,7 @@ namespace AIO7UP.Champions
             var target = TargetSelector.GetTarget(
                 GameObjects.Player.GetRealAutoAttackRange(GameObjects.Player) + 300,
                 DamageType.Physical);
-
+            var target2 = TargetSelector.GetTarget(E.Range, DamageType.Physical);
             if (!target.IsValidTarget())
             {
                 return;
@@ -303,7 +303,7 @@ namespace AIO7UP.Champions
             }
             if (useEFinisher && E.IsReady() && GameObjects.Player.GetSpellDamage(target, SpellSlot.E) > target.Health)
             {
-                E.Cast(target);
+                E.Cast(target2);
             }
 
         }
