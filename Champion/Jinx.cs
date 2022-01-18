@@ -376,30 +376,10 @@ namespace AIO7UP.Champions
             if (EMenu["useE"].GetValue<MenuKeyBind>().Active && E.IsReady())
             {
                 var t = TargetSelector.GetTarget(E.Range, DamageType.Physical);
-                if (t.IsValidTarget() && blitz != null && blitz.Distance(Player.Position) < E.Range)
+                if (t.IsValidTarget())
                 {
                     E.Cast(t);
                 }
-                else
-                {
-                    foreach (var enemy in Enemies.Where(enemy => enemy.IsValidTarget(2000) && enemy.HasBuff("RocketGrab")))
-                    {
-                        E.Cast(blitz.Position.Extend(enemy.Position, 30));
-                        return;
-                        if (!Orbwalker.CanMove())
-                        {
-                            E.Cast(enemy.Position);
-                            E.CastIfHitchanceEquals(enemy, HitChance.Immobile);
-                        }
-                    }
-                    foreach (var Object in ObjectManager.Get<AIBaseClient>().Where(Obj => Obj.IsEnemy && Obj.Distance(Player.Position) < E.Range && (Obj.HasBuff("teleport_target") || Obj.HasBuff("Pantheon_GrandSkyfall_Jump"))))
-                    {
-                        E.Cast(Object.Position);
-                    }
-
-
-                }
-
             }
                     if (Player.ManaPercent < EMenu["EmanaCombo"].GetValue<MenuSlider>().Value && E.IsReady())
                 return;
