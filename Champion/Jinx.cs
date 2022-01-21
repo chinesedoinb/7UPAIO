@@ -13,7 +13,7 @@ namespace AIO7UP.Champions
         public static Menu Menu, QMenu, WMenu, EMenu, RMenu, drawMenu;
         private static bool FishBoneActive = false, Combo = false, Farm = false;
         private static AIHeroClient blitz = null;
-        private static float WCastTime = Game.Time;
+        private static float WCastTime = Game.Time, grabTime = 0;
         private static string[] Spells =
 {
             "katarinar","drain","consume","absolutezero", "staticfield","reapthewhirlwind","jinxw","jinxr","shenstandunited","threshe","threshrpenta","threshq","meditate","caitlynpiltoverpeacemaker", "volibearqattack",
@@ -398,11 +398,13 @@ namespace AIO7UP.Champions
 
                 E.CastIfWillHit(enemy, EMenu["Eaoe"].GetValue<MenuSlider>().Value);
 
-                if (EMenu["Ecc"].GetValue<MenuBool>().Enabled && E.IsReady())
+                if (EMenu["Ecc"].GetValue<MenuBool>().Enabled && E.IsReady() && Game.Time - grabTime > 1)
                 {
-                    if (!Orbwalker.CanMove())
-                        E.Cast(enemy.Position);
-                    E.CastIfHitchanceEquals(enemy, HitChance.Immobile);
+                    foreach (var enemy1 in GameObjects.EnemyHeroes.Where(enemy1 => enemy1.IsValidTarget(E.Range + 50) && !Orbwalker.CanMove()))
+                    {
+                        E.Cast(enemy1);
+                        return;
+                    }
                 }
 
                 if (enemy.MoveSpeed < 250 && EMenu["Eslow"].GetValue<MenuBool>().Enabled && E.IsReady())
@@ -414,10 +416,11 @@ namespace AIO7UP.Champions
 
             if (EMenu["Etel"].GetValue<MenuBool>().Enabled && E.IsReady())
             {
-                foreach (var Object in ObjectManager.Get<AIBaseClient>().Where(Obj => Obj.IsEnemy && Obj.Distance(Player.Position) < E.Range && (Obj.HasBuff("teleport_target") || Obj.HasBuff("Pantheon_GrandSkyfall_Jump"))))
+                foreach (var Object in ObjectManager.Get<AIBaseClient>().Where(Obj => Obj.IsEnemy && Obj.Distance(Player.Position) <= E.Range && (Obj.HasBuff("teleport_target") || Obj.HasBuff("Pantheon_GrandSkyfall_Jump"))))
                 {
                     E.Cast(Object.Position);
                 }
+
             }
 
             if (Combo && Player.IsMoving && EMenu["Ecombo"].GetValue<MenuBool>().Enabled && E.IsReady())

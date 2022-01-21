@@ -22,6 +22,7 @@ namespace AIO7UP
         }
         private static void OnLoadingComplete()
         {
+
             if (ObjectManager.Player == null)
                 return;
             try
@@ -42,6 +43,9 @@ namespace AIO7UP
                         break;
                     case "Jinx":
                         Jinx.OnGameLoad();
+                        break;
+                    case "Fizz":
+                        Fizz.OnGameLoad();
                         break;
                     case "Kogmaw":
                         Kogmaw.OnGameLoad();

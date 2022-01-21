@@ -120,6 +120,7 @@ namespace AIO7UP.Champions
             }
         }
 
+
         public static void OnGameLoad()
         {
             if (ObjectManager.Player.CharacterName != "Orianna")

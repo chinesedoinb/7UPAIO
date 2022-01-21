@@ -19,6 +19,7 @@ namespace AIO7UP.Champions
         private static bool attackNow;
         private static int tickIndex;
         
+
         
         public static void OnGameLoad()
         {

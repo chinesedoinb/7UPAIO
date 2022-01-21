@@ -46,7 +46,6 @@ namespace AIO7UP.Champions
             }
         }
 
-
         
         private static void ProcessLink(string key, object value)
         {

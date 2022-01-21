@@ -20,13 +20,18 @@ namespace AIO7UP.Champions
         public static Spell R;
         public static Font Thm;
         public static GameObject EkkoREmitter { get; set; }
+        public static AIHeroClient _Player
+        {
+            get { return ObjectManager.Player; }
+        }
         public static Menu Menu, ComboMenu, JungleClearMenu, HarassMenu, Ulti, LaneClearMenu, Misc, KillSteals;
+
 
         // Menu
 
         public static void OnGameLoad()
         {
-            if (!GameObjects.Player.CharacterName.Contains("Ekko")) return;
+            if (!_Player.CharacterName.Contains("Ekko")) return;
             EkkoREmitter = ObjectManager.Get<EffectEmitter>().FirstOrDefault(x => x.Name.Equals("Ekko_Base_R_TrailEnd.troy"));
             Q = new Spell(SpellSlot.Q, 850);
             Q.SetSkillshot(250, 2200, 60, false, SpellType.Line);
@@ -150,7 +155,7 @@ namespace AIO7UP.Champions
 
         private static void Drawing_OnDraw(EventArgs args)
         {
-            if (GameObjects.Player.IsDead) return;
+            if (_Player.IsDead) return;
 
             if (Misc["Draw_Disabled"].GetValue<MenuBool>().Enabled) return;
 
@@ -176,7 +181,7 @@ namespace AIO7UP.Champions
 
             if (Misc["DrawTR"].GetValue<MenuBool>().Enabled)
             {
-                Vector2 ft = Drawing.WorldToScreen(GameObjects.Player.Position);
+                Vector2 ft = Drawing.WorldToScreen(_Player.Position);
                 if (ComboMenu["CTurret"].GetValue<MenuKeyBind>().Active)
                 {
                     DrawFont(Thm, "Use E Under Turret : Disable", (float)(ft[0] - 70), (float)(ft[1] + 50), SharpDX.Color.White);
@@ -216,20 +221,20 @@ namespace AIO7UP.Champions
 
         public static double QDamage(AIBaseClient target)
         {
-            return GameObjects.Player.CalculateDamage(target, DamageType.Magical,
-                (float)(new[] { 0, 60, 75, 90, 105, 120 }[Q.Level] + 0.2f * GameObjects.Player.FlatMagicDamageMod));
+            return _Player.CalculateDamage(target, DamageType.Magical,
+                (float)(new[] { 0, 60, 75, 90, 105, 120 }[Q.Level] + 0.2f * _Player.FlatMagicDamageMod));
         }
 
         public static double EDamage(AIBaseClient target)
         {
-            return GameObjects.Player.CalculateDamage(target, DamageType.Magical,
-                (float)(new[] { 0, 40, 65, 90, 115, 140 }[E.Level] + 0.4f * GameObjects.Player.FlatMagicDamageMod));
+            return _Player.CalculateDamage(target, DamageType.Magical,
+                (float)(new[] { 0, 40, 65, 90, 115, 140 }[E.Level] + 0.4f * _Player.FlatMagicDamageMod));
         }
 
         public static double RDamage(AIBaseClient target)
         {
-            return GameObjects.Player.CalculateDamage(target, DamageType.Magical,
-                (float)(new[] { 0, 150, 300, 450 }[R.Level] + 1.5f * GameObjects.Player.FlatMagicDamageMod));
+            return _Player.CalculateDamage(target, DamageType.Magical,
+                (float)(new[] { 0, 150, 300, 450 }[R.Level] + 1.5f * _Player.FlatMagicDamageMod));
         }
 
         // Create + Delete
@@ -287,12 +292,12 @@ namespace AIO7UP.Champions
         public static void Interupt(AIHeroClient sender, Interrupter.InterruptSpellArgs i)
         {
             var Inter = Misc["inter"].GetValue<MenuBool>().Enabled;
-            if (!sender.IsEnemy || !(sender is AIHeroClient) || GameObjects.Player.IsRecalling())
+            if (!sender.IsEnemy || !(sender is AIHeroClient) || _Player.IsRecalling())
             {
                 return;
             }
 
-            if (Inter && W.IsReady() && i.DangerLevel == Interrupter.DangerLevel.High && GameObjects.Player.Distance(sender) <= W.Range)
+            if (Inter && W.IsReady() && i.DangerLevel == Interrupter.DangerLevel.High && _Player.Distance(sender) <= W.Range)
             {
                 W.Cast(sender);
             }
@@ -310,7 +315,7 @@ namespace AIO7UP.Champions
             var minE = HarassMenu["MinE"].GetValue<MenuSlider>().Value;
             var turret = HarassMenu["HTurret"].GetValue<MenuBool>().Enabled;
             var target = TargetSelector.GetTarget(W.Range, DamageType.Magical);
-            if (GameObjects.Player.ManaPercent <= mana)
+            if (_Player.ManaPercent <= mana)
             {
                 return;
             }
@@ -347,10 +352,10 @@ namespace AIO7UP.Champions
                     {
                         if (!UnderTuret(target))
                         {
-                            if (GameObjects.Player.Spellbook.CastSpell(SpellSlot.E, target.Position))
+                            if (_Player.Spellbook.CastSpell(SpellSlot.E, target.Position))
                             {
-                                // Orbwalker.ResetAutoAttackTimer();
-                                GameObjects.Player.IssueOrder(GameObjectOrder.AttackUnit, target);
+                               // Orbwalker.ResetAutoAttackTimer();
+                                _Player.IssueOrder(GameObjectOrder.AttackUnit, target);
                                 return;
                             }
                         }
@@ -359,8 +364,8 @@ namespace AIO7UP.Champions
                     {
                         E.Cast(target);
                         {
-                            // Orbwalker.ResetAutoAttackTimer();
-                            GameObjects.Player.IssueOrder(GameObjectOrder.AttackUnit, target);
+                           // Orbwalker.ResetAutoAttackTimer();
+                            _Player.IssueOrder(GameObjectOrder.AttackUnit, target);
                             return;
                         }
                     }
@@ -412,7 +417,7 @@ namespace AIO7UP.Champions
                     }
                 }
 
-                if (useE && E.IsReady() && target.IsValidTarget(E.Range + 375) && (target.Distance(GameObjects.Player.Position) >= 175 || GameObjects.Player.HealthPercent <= 20))
+                if (useE && E.IsReady() && target.IsValidTarget(E.Range + 375) && (target.Distance(_Player.Position) >= 175 || _Player.HealthPercent <= 20))
                 {
                     if (ComboMenu["EMode"].GetValue<MenuList>().Index == 0)
                     {
@@ -420,11 +425,11 @@ namespace AIO7UP.Champions
                         {
                             if (!UnderTuret(target))
                             {
-                                if (GameObjects.Player.Spellbook.CastSpell(SpellSlot.E, target.Position))
+                                if (_Player.Spellbook.CastSpell(SpellSlot.E, target.Position))
                                 {
-                                    // Orbwalker.ResetAutoAttackTimer();
+                                   // Orbwalker.ResetAutoAttackTimer();
                                     //Core.DelayAction(() => EloBuddy.Player.IssueOrder(GameObjectOrder.AttackUnit, target), 500);
-                                    GameObjects.Player.IssueOrder(GameObjectOrder.AttackUnit, target);
+                                    _Player.IssueOrder(GameObjectOrder.AttackUnit, target);
                                     return;
                                 }
 
@@ -432,10 +437,10 @@ namespace AIO7UP.Champions
                         }
                         else
                         {
-                            if (GameObjects.Player.Spellbook.CastSpell(SpellSlot.E, target.Position))
+                            if (_Player.Spellbook.CastSpell(SpellSlot.E, target.Position))
                             {
-                                // Orbwalker.ResetAutoAttackTimer();
-                                GameObjects.Player.IssueOrder(GameObjectOrder.AttackUnit, target);
+                               // Orbwalker.ResetAutoAttackTimer();
+                                _Player.IssueOrder(GameObjectOrder.AttackUnit, target);
                                 return;
                             }
                         }
@@ -446,10 +451,10 @@ namespace AIO7UP.Champions
                             {
                                 if (!UnderTuret(target))
                                 {
-                                    if (GameObjects.Player.Spellbook.CastSpell(SpellSlot.E, target.Position))
+                                    if (_Player.Spellbook.CastSpell(SpellSlot.E, target.Position))
                                     {
-                                        // Orbwalker.ResetAutoAttackTimer();
-                                        GameObjects.Player.IssueOrder(GameObjectOrder.AttackUnit, target);
+                                       // Orbwalker.ResetAutoAttackTimer();
+                                        _Player.IssueOrder(GameObjectOrder.AttackUnit, target);
                                         return;
                                     }
                                 }
@@ -457,10 +462,10 @@ namespace AIO7UP.Champions
                         }
                         else
                         {
-                            if (GameObjects.Player.Spellbook.CastSpell(SpellSlot.E, target.Position))
+                            if (_Player.Spellbook.CastSpell(SpellSlot.E, target.Position))
                             {
-                                // Orbwalker.ResetAutoAttackTimer();
-                                GameObjects.Player.IssueOrder(GameObjectOrder.AttackUnit, target);
+                               // Orbwalker.ResetAutoAttackTimer();
+                                _Player.IssueOrder(GameObjectOrder.AttackUnit, target);
                                 return;
                             }
                         }
@@ -481,7 +486,7 @@ namespace AIO7UP.Champions
                             .Cast<AIBaseClient>().ToList();
             var quang = W.GetLineFarmLocation(minionQ, Q.Width);
             if (quang.Position.IsValid())
-                if (GameObjects.Player.ManaPercent <= mana)
+                if (_Player.ManaPercent <= mana)
                 {
                     return;
                 }
@@ -493,14 +498,14 @@ namespace AIO7UP.Champions
                     Q.Cast(quang.Position);
                 }
 
-                if (useE && E.IsReady() && E.CanCast(minion) && EDamage(minion) + GameObjects.Player.GetAutoAttackDamage(minion) >= minion.Health)
+                if (useE && E.IsReady() && E.CanCast(minion) && EDamage(minion) + _Player.GetAutoAttackDamage(minion) >= minion.Health)
                 {
-                    if (minion.Distance(GameObjects.Player.Position) > GameObjects.Player.GetRealAutoAttackRange(minion))
+                    if (minion.Distance(_Player.Position) > _Player.GetRealAutoAttackRange(minion))
                     {
-                        if (GameObjects.Player.Spellbook.CastSpell(SpellSlot.E))
+                        if (_Player.Spellbook.CastSpell(SpellSlot.E))
                         {
-                            // Orbwalker.ResetAutoAttackTimer();
-                            GameObjects.Player.IssueOrder(GameObjectOrder.AttackUnit, minion);
+                           // Orbwalker.ResetAutoAttackTimer();
+                            _Player.IssueOrder(GameObjectOrder.AttackUnit, minion);
                             return;
                         }
                     }
@@ -518,7 +523,7 @@ namespace AIO7UP.Champions
             var useE = JungleClearMenu["JE"].GetValue<MenuBool>().Enabled;
             var mana = JungleClearMenu["JM"].GetValue<MenuSlider>().Value;
 
-            if (GameObjects.Player.ManaPercent <= mana)
+            if (_Player.ManaPercent <= mana)
             {
                 return;
             }
@@ -576,14 +581,14 @@ namespace AIO7UP.Champions
                     }
                 }
 
-                if (useE && E.IsReady() && target.Distance(GameObjects.Player.Position) <= E.Range + 375)
+                if (useE && E.IsReady() && target.Distance(_Player.Position) <= E.Range + 375)
                 {
                     if (EDamage(target) >= target.Health)
                     {
-                        if (GameObjects.Player.Spellbook.CastSpell(SpellSlot.E, target.Position))
+                        if (_Player.Spellbook.CastSpell(SpellSlot.E, target.Position))
                         {
-                            // Orbwalker.ResetAutoAttackTimer();
-                            GameObjects.Player.IssueOrder(GameObjectOrder.AttackUnit, target);
+                           // Orbwalker.ResetAutoAttackTimer();
+                            _Player.IssueOrder(GameObjectOrder.AttackUnit, target);
                             return;
                         }
                     }
@@ -618,17 +623,17 @@ namespace AIO7UP.Champions
 
             if (useREs && R.IsReady())
             {
-                if (GameObjects.Player.HealthPercent <= Hp)
+                if (_Player.HealthPercent <= Hp)
                 {
                     R.Cast();
                 }
 
-                if (sender.BaseAttackDamage >= GameObjects.Player.Health + GameObjects.Player.AllShield || sender.BaseAbilityDamage >= GameObjects.Player.Health + GameObjects.Player.AllShield)
+                if (sender.BaseAttackDamage >= _Player.Health + _Player.AllShield || sender.BaseAbilityDamage >= _Player.Health + _Player.AllShield)
                 {
                     R.Cast();
                 }
 
-                if (sender.GetAutoAttackDamage(GameObjects.Player) >= GameObjects.Player.Health + GameObjects.Player.AllShield)
+                if (sender.GetAutoAttackDamage(_Player) >= _Player.Health + _Player.AllShield)
                 {
                     R.Cast();
                 }
@@ -681,7 +686,7 @@ namespace AIO7UP.Champions
 
         private static void Gapcloser_OnGapCloser(AIHeroClient sender, AntiGapcloser.GapcloserArgs e)
         {
-            if (Misc["antiGap"].GetValue<MenuBool>().Enabled && sender.IsEnemy && sender.Distance(GameObjects.Player.Position) <= 325 && Q.IsReady())
+            if (Misc["antiGap"].GetValue<MenuBool>().Enabled && sender.IsEnemy && sender.Distance(_Player.Position) <= 325 && Q.IsReady())
             {
                 Q.Cast(sender);
             }

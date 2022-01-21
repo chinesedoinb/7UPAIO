@@ -20,7 +20,10 @@ namespace AIO7UP.Champions
         public static Item Tiamat;
         public static Item Bil;
         public static Item Youmuu;
-
+        public static AIHeroClient _Player
+        {
+            get { return ObjectManager.Player; }
+        }
         public static Spell Q;
         public static Spell W;
         public static Spell R;
@@ -29,7 +32,7 @@ namespace AIO7UP.Champions
 
         public static void OnGameLoad()
         {
-            if (!ObjectManager.Player.CharacterName.Contains("Talon")) return;
+            if (!_Player.CharacterName.Contains("Talon")) return;
             Bootstrap.Init(null);
             Q = new Spell(SpellSlot.Q, 500);
             W = new Spell(SpellSlot.W, 750);
@@ -134,11 +137,11 @@ namespace AIO7UP.Champions
         }
         public static bool RActive
         {
-            get { return ObjectManager.Player.HasBuff("TalonRHaste"); }
+            get { return _Player.HasBuff("TalonRHaste"); }
         }
         private static void Gapcloser_OnGapcloser(AIHeroClient sender, AntiGapcloser.GapcloserArgs e)
         {
-            if (Misc["AntiGap"].GetValue<MenuBool>().Enabled && sender.IsEnemy && sender.Position.Distance(ObjectManager.Player) < 300)
+            if (Misc["AntiGap"].GetValue<MenuBool>().Enabled && sender.IsEnemy && sender.Position.Distance(_Player) < 300)
             {
                 W.Cast(sender);
             }
@@ -151,7 +154,7 @@ namespace AIO7UP.Champions
             var useR = ComboMenu["ComboR"].GetValue<MenuBool>().Enabled;
             if (target != null)
             {
-                if (useQ && Q.IsReady() && target.IsValidTarget(Q.Range) && ObjectManager.Player.Distance(target) > 125)
+                if (useQ && Q.IsReady() && target.IsValidTarget(Q.Range) && _Player.Distance(target) > 125)
                 {
                     Q.Cast(target);
                 }
@@ -172,7 +175,7 @@ namespace AIO7UP.Champions
             var useR = ComboMenu["rcount"].GetValue<MenuBool>().Enabled;
             var MinR = ComboMenu["cou"].GetValue<MenuSlider>().Value;
 
-            if (useR && R.IsReady() && ObjectManager.Player.Position.CountEnemyHeroesInRange(450) >= MinR)
+            if (useR && R.IsReady() && _Player.Position.CountEnemyHeroesInRange(450) >= MinR)
             {
                 R.Cast();
             }
@@ -183,7 +186,7 @@ namespace AIO7UP.Champions
             var useW = JungleClearMenu["WJungle"].GetValue<MenuBool>().Enabled;
             var mana = JungleClearMenu["MnJungle"].GetValue<MenuSlider>().Value;
             var jungleMonsters = GameObjects.Jungle.Where(j => j.IsValidTarget(W.Range)).FirstOrDefault(j => j.IsValidTarget(W.Range));
-            if (ObjectManager.Player.ManaPercent < mana)
+            if (_Player.ManaPercent < mana)
             {
                 return;
             }
@@ -212,7 +215,7 @@ namespace AIO7UP.Champions
 
                 //var hitminion = GameObjects.Minions.(minions, W.Width, (int)W.Range);
 
-                if (ObjectManager.Player.ManaPercent <= mana)
+                if (_Player.ManaPercent <= mana)
                 {
                     return;
                 }
@@ -240,12 +243,12 @@ namespace AIO7UP.Champions
                     Bil.Cast(target);
                 }
 
-                if ((item && Botrk.IsReady && Botrk.IsOwned() && target.IsValidTarget(475)) && (ObjectManager.Player.HealthPercent <= Minhp || target.HealthPercent < Minhpp))
+                if ((item && Botrk.IsReady && Botrk.IsOwned() && target.IsValidTarget(475)) && (_Player.HealthPercent <= Minhp || target.HealthPercent < Minhpp))
                 {
                     Botrk.Cast(target);
                 }
 
-                if (yous && Youmuu.IsReady && Youmuu.IsOwned() && ObjectManager.Player.Distance(target) < 325 && Orbwalker.ActiveMode.HasFlag(OrbwalkerMode.Combo))
+                if (yous && Youmuu.IsReady && Youmuu.IsOwned() && _Player.Distance(target) < 325 && Orbwalker.ActiveMode.HasFlag(OrbwalkerMode.Combo))
                 {
                     Youmuu.Cast();
                 }
@@ -259,7 +262,7 @@ namespace AIO7UP.Champions
             var mana = HarassMenu["ManaW"].GetValue<MenuSlider>().Value;
             var target = TargetSelector.GetTarget(W.Range, DamageType.Physical);
 
-            if (ObjectManager.Player.ManaPercent <= mana)
+            if (_Player.ManaPercent <= mana)
             {
                 return;
             }
@@ -271,7 +274,7 @@ namespace AIO7UP.Champions
                     W.Cast(target);
                 }
 
-                if (useQ && Q.IsReady() && target.IsValidTarget(Q.Range) && ObjectManager.Player.Distance(target) > 125)
+                if (useQ && Q.IsReady() && target.IsValidTarget(Q.Range) && _Player.Distance(target) > 125)
                 {
                     Q.Cast(target);
                 }
@@ -310,23 +313,23 @@ namespace AIO7UP.Champions
                 {
                     Q.Cast(target);
                     Orbwalker.ResetAutoAttackTimer();
-                    ObjectManager.Player.IssueOrder(GameObjectOrder.AttackUnit, target);
+                    _Player.IssueOrder(GameObjectOrder.AttackUnit, target);
                 }
-                if (HasQ && Q.IsReady() && Orbwalker.ActiveMode.HasFlag(OrbwalkerMode.Harass) && target.IsValidTarget(150) && ObjectManager.Player.ManaPercent > ManaW)
+                if (HasQ && Q.IsReady() && Orbwalker.ActiveMode.HasFlag(OrbwalkerMode.Harass) && target.IsValidTarget(150) && _Player.ManaPercent > ManaW)
                 {
                     Q.Cast(target);
                     Orbwalker.ResetAutoAttackTimer();
-                    ObjectManager.Player.IssueOrder(GameObjectOrder.AttackUnit, target);
+                    _Player.IssueOrder(GameObjectOrder.AttackUnit, target);
                 }
 
                 if ((useriu) && (Orbwalker.ActiveMode.HasFlag(OrbwalkerMode.Combo) || Orbwalker.ActiveMode.HasFlag(OrbwalkerMode.Harass)))
                 {
-                    if (Hydra.IsInRange(ObjectManager.Player) && Hydra.IsReady && target.IsValidTarget(250))
+                    if (Hydra.IsInRange(_Player) && Hydra.IsReady && target.IsValidTarget(250))
                     {
                         Hydra.Cast();
                     }
 
-                    if (Tiamat.IsInRange(ObjectManager.Player) && Tiamat.IsReady && target.IsValidTarget(250))
+                    if (Tiamat.IsInRange(_Player) && Tiamat.IsReady && target.IsValidTarget(250))
                     {
                         Tiamat.Cast();
                     }
@@ -336,26 +339,26 @@ namespace AIO7UP.Champions
 
         public static double QDamage(AIBaseClient target)
         {
-            return ObjectManager.Player.CalculateDamage(target, DamageType.Physical,
-                    (float)(new[] { 0, 80, 120, 140, 160, 180 }[Q.Level] + 1.1f * ObjectManager.Player.FlatPhysicalDamageMod));
+            return _Player.CalculateDamage(target, DamageType.Physical,
+                    (float)(new[] { 0, 80, 120, 140, 160, 180 }[Q.Level] + 1.1f * _Player.FlatPhysicalDamageMod));
 
         }
 
         public static double WDamage(AIBaseClient target)
         {
-            return ObjectManager.Player.CalculateDamage(target, DamageType.Physical,
-                (float)(new[] { 0, 60, 90, 120, 150, 180 }[W.Level] + 0.6f * ObjectManager.Player.FlatPhysicalDamageMod));
+            return _Player.CalculateDamage(target, DamageType.Physical,
+                (float)(new[] { 0, 60, 90, 120, 150, 180 }[W.Level] + 0.6f * _Player.FlatPhysicalDamageMod));
         }
 
         public static double RDamage(AIBaseClient target)
         {
-            return ObjectManager.Player.CalculateDamage(target, DamageType.Physical,
-                (float)(new[] { 0, 80, 120, 160 }[R.Level] + 0.8f * ObjectManager.Player.FlatPhysicalDamageMod));
+            return _Player.CalculateDamage(target, DamageType.Physical,
+                (float)(new[] { 0, 80, 120, 160 }[R.Level] + 0.8f * _Player.FlatPhysicalDamageMod));
         }
 
         public static void KillSteal()
         {
-            if (ObjectManager.Player.HasBuff("TalonEHop"))
+            if (_Player.HasBuff("TalonEHop"))
             {
 
             }
@@ -368,7 +371,7 @@ namespace AIO7UP.Champions
                 {
                     if (target != null)
                     {
-                        if (ObjectManager.Player.Distance(target) > 150)
+                        if (_Player.Distance(target) > 150)
                         {
                             if (target.Health + target.AllShield <= QDamage(target))
                             {
@@ -406,7 +409,7 @@ namespace AIO7UP.Champions
                 }
                 if (Ignite != null && KillStealMenu["ign"].GetValue<MenuBool>().Enabled && Ignite.IsReady())
                 {
-                    if (target.Health + target.AllShield < ObjectManager.Player.GetSummonerSpellDamage(target, SummonerSpell.Ignite))
+                    if (target.Health + target.AllShield < _Player.GetSummonerSpellDamage(target, SummonerSpell.Ignite))
                     {
                         Ignite.Cast(target);
                     }

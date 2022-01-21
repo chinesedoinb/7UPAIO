@@ -79,18 +79,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Champion\7UP ChewyVayne.cs" />
-    <Compile Include="Champion\Jinx.cs" />
-    <Compile Include="Champion\Ryze.cs" />
     <Compile Include="Champion\Cassiopeia.cs" />
     <Compile Include="Champion\Ekko.cs" />
+    <Compile Include="Champion\Jinx.cs" />
     <Compile Include="Champion\Jax.cs" />
     <Compile Include="Champion\Kogmaw.cs" />
-    <Compile Include="Champion\Leblanc.cs" />
     <Compile Include="Champion\Olaf.cs" />
+    <Compile Include="Champion\OneKeyToFish.cs" />
     <Compile Include="Champion\Oriana.cs" />
-    <Compile Include="Champion\Zed.cs" />
     <Compile Include="Champion\Viktor.cs" />
+    <Compile Include="Champion\Ryze.cs" />
+    <Compile Include="Champion\Leblanc.cs" />
     <Compile Include="Champion\Talon.cs" />
+    <Compile Include="Champion\Zed.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

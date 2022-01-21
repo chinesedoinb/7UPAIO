@@ -14,6 +14,13 @@ namespace AIO7UP.Champions
 {
     static class Cassiopeia
     {
+        private static AIHeroClient _Player
+        {
+            get { return ObjectManager.Player; }
+        }
+
+        // public static ColorBGRA Red { get; private set; }
+        //   public static ColorBGRA Cyan { get; private set; }
         public static Spell _Q;
         public static Spell _W;
         public static Spell _E;
@@ -24,9 +31,10 @@ namespace AIO7UP.Champions
 
         private static Menu StartMenu, ComboMenu, LastHitM, DebugC, DrawingsMenu, JungleMenu, ClearMenu, UtilityMenu, RSet, ESet, WSet, QSet, otheroptions;
 
+
         public static void OnGameLoad()
         {
-            if (!GameObjects.Player.CharacterName.Contains("Cassiopeia"))
+            if (!_Player.CharacterName.Contains("Cassiopeia"))
             {
                 return;
             }
@@ -282,22 +290,22 @@ namespace AIO7UP.Champions
         }
         public static void LastHit()
         {
-            var MHR = GameObjects.EnemyMinions.Where(a => a.Distance(GameObjects.Player) <= _Q.Range).OrderBy(a => a.Health).FirstOrDefault();
+            var MHR = GameObjects.EnemyMinions.Where(a => a.Distance(_Player) <= _Q.Range).OrderBy(a => a.Health).FirstOrDefault();
             if (MHR != null)
             {
 
 
 
-                if (ClearMenu["UseQLH"].GetValue<MenuBool>().Enabled && _Q.IsReady() && GameObjects.Player.ManaPercent > ClearMenu["ClearMana"].GetValue<MenuSlider>().Value && MHR.IsValidTarget(_Q.Range) &&
-                    GameObjects.Player.GetSpellDamage(MHR, SpellSlot.Q) >= MHR.Health)
+                if (ClearMenu["UseQLH"].GetValue<MenuBool>().Enabled && _Q.IsReady() && _Player.ManaPercent > ClearMenu["ClearMana"].GetValue<MenuSlider>().Value && MHR.IsValidTarget(_Q.Range) &&
+                    _Player.GetSpellDamage(MHR, SpellSlot.Q) >= MHR.Health)
 
                 {
                     _Q.Cast(MHR);
                 }
 
 
-                if (ClearMenu["UseWLH"].GetValue<MenuBool>().Enabled && _W.IsReady() && GameObjects.Player.GetSpellDamage(MHR, SpellSlot.W) >= MHR.Health &&
-                    GameObjects.Player.ManaPercent > ClearMenu["ClearMana"].GetValue<MenuSlider>().Value)
+                if (ClearMenu["UseWLH"].GetValue<MenuBool>().Enabled && _W.IsReady() && _Player.GetSpellDamage(MHR, SpellSlot.W) >= MHR.Health &&
+                    _Player.ManaPercent > ClearMenu["ClearMana"].GetValue<MenuSlider>().Value)
                 {
                     _W.Cast(MHR.Position);
                 }
@@ -310,20 +318,20 @@ namespace AIO7UP.Champions
 
         public static void JungleClear()
         {
-            var MHR = GameObjects.Jungle.Where(a => a.Distance(GameObjects.Player) <= _Q.Range).OrderBy(a => a.Health).FirstOrDefault();
+            var MHR = GameObjects.Jungle.Where(a => a.Distance(_Player) <= _Q.Range).OrderBy(a => a.Health).FirstOrDefault();
             if (MHR != null)
             {
-                if (_Q.IsReady() && GameObjects.Player.ManaPercent > JungleMenu["ClearManaJ"].GetValue<MenuSlider>().Value && JungleMenu["UseJQCL"].GetValue<MenuBool>().Enabled && MHR.IsValidTarget(_Q.Range))
+                if (_Q.IsReady() && _Player.ManaPercent > JungleMenu["ClearManaJ"].GetValue<MenuSlider>().Value && JungleMenu["UseJQCL"].GetValue<MenuBool>().Enabled && MHR.IsValidTarget(_Q.Range))
                 {
                     _Q.Cast(MHR);
                 }
             }
 
-            if (_W.IsReady() && _Q.IsReady() == false && GameObjects.Player.ManaPercent > JungleMenu["ClearManaJ"].GetValue<MenuSlider>().Value && JungleMenu["UseJWCL"].GetValue<MenuBool>().Enabled && MHR.IsValidTarget(_W.Range))
+            if (_W.IsReady() && _Q.IsReady() == false && _Player.ManaPercent > JungleMenu["ClearManaJ"].GetValue<MenuSlider>().Value && JungleMenu["UseJWCL"].GetValue<MenuBool>().Enabled && MHR.IsValidTarget(_W.Range))
             {
                 _W.Cast(MHR.Position);
             }
-            if (_E.IsReady() && GameObjects.Player.ManaPercent > JungleMenu["ClearManaJ"].GetValue<MenuSlider>().Value && JungleMenu["UseJECL"].GetValue<MenuBool>().Enabled && MHR.IsValidTarget(_E.Range))
+            if (_E.IsReady() && _Player.ManaPercent > JungleMenu["ClearManaJ"].GetValue<MenuSlider>().Value && JungleMenu["UseJECL"].GetValue<MenuBool>().Enabled && MHR.IsValidTarget(_E.Range))
             {
                 _E.Cast(MHR);
             }
@@ -343,7 +351,7 @@ namespace AIO7UP.Champions
                     }
                 }
             }
-            var MHR = GameObjects.EnemyMinions.Where(a => a.Distance(GameObjects.Player) <= _Q.Range).OrderBy(a => a.Health).FirstOrDefault();
+            var MHR = GameObjects.EnemyMinions.Where(a => a.Distance(_Player) <= _Q.Range).OrderBy(a => a.Health).FirstOrDefault();
             if (MHR != null)
 
                 if (ClearMenu["UseWCL"].GetValue<MenuBool>().Enabled)
@@ -355,7 +363,7 @@ namespace AIO7UP.Champions
 
                 }
 
-            if (ClearMenu["UseECL"].GetValue<MenuBool>().Enabled && _E.IsReady() && GameObjects.Player.ManaPercent > ClearMenu["ClearMana"].GetValue<MenuSlider>().Value && MHR.IsValidTarget(_E.Range))
+            if (ClearMenu["UseECL"].GetValue<MenuBool>().Enabled && _E.IsReady() && _Player.ManaPercent > ClearMenu["ClearMana"].GetValue<MenuSlider>().Value && MHR.IsValidTarget(_E.Range))
 
             {
                 _E.Cast(MHR);
@@ -416,7 +424,7 @@ namespace AIO7UP.Champions
                     {
 
                         _E.Cast(target);
-                        GameObjects.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
+                        _Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
                         if (DebugC["Debug"].GetValue<MenuBool>().Enabled)
                         {
 
@@ -436,7 +444,7 @@ namespace AIO7UP.Champions
             }
             if (WSet["UseWH"].GetValue<MenuBool>().Enabled)
             {
-                if (!_W.IsReady() && GameObjects.Player.Distance(target) >= 500) return;
+                if (!_W.IsReady() && _Player.Distance(target) >= 500) return;
                 {
 
                     var Wpred = _W.GetPrediction(target);
@@ -524,7 +532,7 @@ namespace AIO7UP.Champions
                                 {
 
                                     Console.WriteLine("Casting Q with HIGH pred saver ");
-                                    GameObjects.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
+                                    _Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
                                 }
                             }
                         }
@@ -539,7 +547,7 @@ namespace AIO7UP.Champions
             var Zhonya = otheroptions["Zhonya"].GetValue<MenuBool>().Enabled;
             var ZhonyaHP = otheroptions["ZhonyaHP"].GetValue<MenuSlider>().Value;
             if (!Zhonya || !Zhonia.IsReady || !Zhonia.IsOwned()) return;
-            if (GameObjects.Player.HealthPercent <= ZhonyaHP && GameObjects.Player.CountEnemyHeroesInRange(500) >= 1)
+            if (_Player.HealthPercent <= ZhonyaHP && _Player.CountEnemyHeroesInRange(500) >= 1)
             {
                 Zhonia.Cast();
             }
@@ -552,7 +560,7 @@ namespace AIO7UP.Champions
                 var shealth = otheroptions["SeraphHP"].GetValue<MenuSlider>().Value;
                 var smana = otheroptions["SeraphMana"].GetValue<MenuSlider>().Value;
                 if (!embrace || !Zhonia.IsReady || !Zhonia.IsOwned()) return;
-                if (GameObjects.Player.HealthPercent <= shealth && GameObjects.Player.ManaPercent >= smana && GameObjects.Player.CountEnemyHeroesInRange(500) >= 1)
+                if (_Player.HealthPercent <= shealth && _Player.ManaPercent >= smana && _Player.CountEnemyHeroesInRange(500) >= 1)
                 {
                     Seraph.Cast();
                 }
@@ -593,7 +601,7 @@ namespace AIO7UP.Champions
                         {
 
                             _E.Cast(target);
-                            GameObjects.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
+                            _Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
                             if (DebugC["Debug"].GetValue<MenuBool>().Enabled)
                             {
                                 Console.WriteLine(Game.Time + "Casting E with Speedup");
@@ -613,7 +621,7 @@ namespace AIO7UP.Champions
 
                 if (WSet["UseW"].GetValue<MenuBool>().Enabled)
                 {
-                    if (!_W.IsReady() && GameObjects.Player.Distance(target) >= 500) return;
+                    if (!_W.IsReady() && _Player.Distance(target) >= 500) return;
                     {
 
                         var Wpred = _W.GetPrediction(target);
@@ -727,7 +735,7 @@ namespace AIO7UP.Champions
                                     {
 
                                         Console.WriteLine("Casting Q with HIGH pred saver ");
-                                        GameObjects.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
+                                        _Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
                                     }
                                 }
                             }
@@ -750,7 +758,7 @@ namespace AIO7UP.Champions
                             {
 
                                 Console.WriteLine("Casting Q with HIGH pred ");
-                                GameObjects.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
+                                _Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
                             }
                         }
                     }
@@ -764,14 +772,14 @@ namespace AIO7UP.Champions
                     var Enemys = GameObjects.EnemyHeroes.Where(x => x.IsValidTarget(_R.Range - 25));
                     if (Enemys != null)
                     {
-                        if (Enemys.Count() >= RSet["UseRGs"].GetValue<MenuSlider>().Value && target.IsFacing(GameObjects.Player) && RSet["UseRFace"].GetValue<MenuBool>().Enabled)
+                        if (Enemys.Count() >= RSet["UseRGs"].GetValue<MenuSlider>().Value && target.IsFacing(_Player) && RSet["UseRFace"].GetValue<MenuBool>().Enabled)
                         {
-                            GameObjects.Player.IssueOrder(GameObjectOrder.MoveTo, target);
+                            _Player.IssueOrder(GameObjectOrder.MoveTo, target);
                             _R.Cast(target);
                         }
                         if (Enemys.Count() >= RSet["UseRGs"].GetValue<MenuSlider>().Value && !RSet["UseRFace"].GetValue<MenuBool>().Enabled)
                         {
-                            GameObjects.Player.IssueOrder(GameObjectOrder.MoveTo, target);
+                            _Player.IssueOrder(GameObjectOrder.MoveTo, target);
                             _R.Cast(target);
                         }
                     }
@@ -782,15 +790,15 @@ namespace AIO7UP.Champions
                 {
                     if (!_R.IsReady()) return;
                     {
-                        if (target.IsFacing(GameObjects.Player) && target.IsValidTarget(_R.Range) && RSet["UseRFace"].GetValue<MenuBool>().Enabled)
+                        if (target.IsFacing(_Player) && target.IsValidTarget(_R.Range) && RSet["UseRFace"].GetValue<MenuBool>().Enabled)
                         {
-                            GameObjects.Player.IssueOrder(GameObjectOrder.MoveTo, target);
+                            _Player.IssueOrder(GameObjectOrder.MoveTo, target);
                             _R.Cast(target.Position);
                         }
                     }
                     if (target.IsValidTarget(_R.Range) && !RSet["UseRFace"].GetValue<MenuBool>().Enabled)
                     {
-                        GameObjects.Player.IssueOrder(GameObjectOrder.MoveTo, target);
+                        _Player.IssueOrder(GameObjectOrder.MoveTo, target);
                         _R.Cast(target.Position);
                     }
 
@@ -808,7 +816,7 @@ namespace AIO7UP.Champions
                         {
 
                             _E.Cast(target);
-                            GameObjects.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
+                            _Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
                             if (DebugC["Debug"].GetValue<MenuBool>().Enabled)
                             {
                                 Console.WriteLine(Game.Time + "Casting E with Speedup");
@@ -828,7 +836,7 @@ namespace AIO7UP.Champions
 
                 if (WSet["UseW"].GetValue<MenuBool>().Enabled)
                 {
-                    if (!_W.IsReady() && GameObjects.Player.Distance(target) >= 500) return;
+                    if (!_W.IsReady() && _Player.Distance(target) >= 500) return;
                     {
 
                         var Wpred = _W.GetPrediction(target);
@@ -940,7 +948,7 @@ namespace AIO7UP.Champions
                                     if (DebugC["Debug"].GetValue<MenuBool>().Enabled)
                                     {
                                         Console.WriteLine("Casting Q with HIGH pred saver ");
-                                        GameObjects.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
+                                        _Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
                                     }
                                 }
 
@@ -964,7 +972,7 @@ namespace AIO7UP.Champions
                             if (DebugC["Debug"].GetValue<MenuBool>().Enabled)
                             {
                                 Console.WriteLine("Casting Q with HIGH pred ");
-                                GameObjects.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
+                                _Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
                             }
                         }
 
@@ -979,14 +987,14 @@ namespace AIO7UP.Champions
                     var Enemys = GameObjects.EnemyHeroes.Where(x => x.IsValidTarget(_R.Range - 25));
                     if (Enemys != null)
                     {
-                        if (Enemys.Count() >= RSet["UseRGs"].GetValue<MenuSlider>().Value && target.IsFacing(GameObjects.Player) && RSet["UseRFace"].GetValue<MenuBool>().Enabled)
+                        if (Enemys.Count() >= RSet["UseRGs"].GetValue<MenuSlider>().Value && target.IsFacing(_Player) && RSet["UseRFace"].GetValue<MenuBool>().Enabled)
                         {
-                            GameObjects.Player.IssueOrder(GameObjectOrder.MoveTo, target);
+                            _Player.IssueOrder(GameObjectOrder.MoveTo, target);
                             _R.Cast(target);
                         }
                         if (Enemys.Count() >= RSet["UseRGs"].GetValue<MenuSlider>().Value && !RSet["UseRFace"].GetValue<MenuBool>().Enabled)
                         {
-                            GameObjects.Player.IssueOrder(GameObjectOrder.MoveTo, target);
+                            _Player.IssueOrder(GameObjectOrder.MoveTo, target);
                             _R.Cast(target);
                         }
                     }
@@ -998,15 +1006,15 @@ namespace AIO7UP.Champions
                 {
                     if (!_R.IsReady()) return;
                     {
-                        if (target.IsFacing(GameObjects.Player) && target.IsValidTarget(_R.Range) && RSet["UseRFace"].GetValue<MenuBool>().Enabled)
+                        if (target.IsFacing(_Player) && target.IsValidTarget(_R.Range) && RSet["UseRFace"].GetValue<MenuBool>().Enabled)
                         {
-                            GameObjects.Player.IssueOrder(GameObjectOrder.MoveTo, target);
+                            _Player.IssueOrder(GameObjectOrder.MoveTo, target);
                             _R.Cast(target.Position);
                         }
                     }
                     if (target.IsValidTarget(_R.Range) && !RSet["UseRFace"].GetValue<MenuBool>().Enabled)
                     {
-                        GameObjects.Player.IssueOrder(GameObjectOrder.MoveTo, target);
+                        _Player.IssueOrder(GameObjectOrder.MoveTo, target);
                         _R.Cast(target.Position);
                     }
 
@@ -1023,7 +1031,7 @@ namespace AIO7UP.Champions
                         {
 
                             _E.Cast(target);
-                            GameObjects.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
+                            _Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
                             if (DebugC["Debug"].GetValue<MenuBool>().Enabled)
                             {
                                 Console.WriteLine(Game.Time + "Casting E with Speedup");
@@ -1044,7 +1052,7 @@ namespace AIO7UP.Champions
 
                 if (WSet["UseW"].GetValue<MenuBool>().Enabled)
                 {
-                    if (!_W.IsReady() && GameObjects.Player.Distance(target) >= 500) return;
+                    if (!_W.IsReady() && _Player.Distance(target) >= 500) return;
                     {
 
                         var Wpred = _W.GetPrediction(target);
@@ -1154,7 +1162,7 @@ namespace AIO7UP.Champions
                                     if (DebugC["Debug"].GetValue<MenuBool>().Enabled)
                                     {
                                         Console.WriteLine("Casting Q with HIGH pred saver ");
-                                        GameObjects.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
+                                        _Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
                                     }
                                 }
                             }
@@ -1176,7 +1184,7 @@ namespace AIO7UP.Champions
                             if (DebugC["Debug"].GetValue<MenuBool>().Enabled)
                             {
                                 Console.WriteLine("Casting Q with HIGH pred ");
-                                GameObjects.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
+                                _Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
                             }
                         }
                     }
@@ -1190,14 +1198,14 @@ namespace AIO7UP.Champions
                     var Enemys = GameObjects.EnemyHeroes.Where(x => x.IsValidTarget(_R.Range - 25));
                     if (Enemys != null)
                     {
-                        if (Enemys.Count() >= RSet["UseRGs"].GetValue<MenuSlider>().Value && target.IsFacing(GameObjects.Player) && RSet["UseRFace"].GetValue<MenuBool>().Enabled)
+                        if (Enemys.Count() >= RSet["UseRGs"].GetValue<MenuSlider>().Value && target.IsFacing(_Player) && RSet["UseRFace"].GetValue<MenuBool>().Enabled)
                         {
-                            GameObjects.Player.IssueOrder(GameObjectOrder.MoveTo, target);
+                            _Player.IssueOrder(GameObjectOrder.MoveTo, target);
                             _R.Cast(target);
                         }
                         if (Enemys.Count() >= RSet["UseRGs"].GetValue<MenuSlider>().Value && !RSet["UseRFace"].GetValue<MenuBool>().Enabled)
                         {
-                            GameObjects.Player.IssueOrder(GameObjectOrder.MoveTo, target);
+                            _Player.IssueOrder(GameObjectOrder.MoveTo, target);
                             _R.Cast(target);
                         }
                     }
@@ -1208,15 +1216,15 @@ namespace AIO7UP.Champions
                 {
                     if (!_R.IsReady()) return;
                     {
-                        if (target.IsFacing(GameObjects.Player) && target.IsValidTarget(_R.Range) && RSet["UseRFace"].GetValue<MenuBool>().Enabled)
+                        if (target.IsFacing(_Player) && target.IsValidTarget(_R.Range) && RSet["UseRFace"].GetValue<MenuBool>().Enabled)
                         {
-                            GameObjects.Player.IssueOrder(GameObjectOrder.MoveTo, target);
+                            _Player.IssueOrder(GameObjectOrder.MoveTo, target);
                             _R.Cast(target.Position);
                         }
                     }
                     if (target.IsValidTarget(_R.Range) && !RSet["UseRFace"].GetValue<MenuBool>().Enabled)
                     {
-                        GameObjects.Player.IssueOrder(GameObjectOrder.MoveTo, target);
+                        _Player.IssueOrder(GameObjectOrder.MoveTo, target);
                         _R.Cast(target.Position);
                     }
 
@@ -1249,7 +1257,7 @@ namespace AIO7UP.Champions
 
             {
                 if (target.Health + target.PhysicalShield <
-                    GameObjects.Player.GetSummonerSpellDamage(target, SummonerSpell.Ignite))
+                    _Player.GetSummonerSpellDamage(target, SummonerSpell.Ignite))
                 {
                     _Ignite.Cast(target);
                 }
@@ -1284,7 +1292,7 @@ namespace AIO7UP.Champions
                 var Qpred = _Q.GetPrediction(targetQ);
                 if (Qpred.Hitchance >= HitChance.High && targetQ.IsValidTarget(_Q.Range))
                 {
-                    if (targetQ.Health + targetQ.PhysicalShield < GameObjects.Player.GetSpellDamage(targetQ, SpellSlot.Q))
+                    if (targetQ.Health + targetQ.PhysicalShield < _Player.GetSpellDamage(targetQ, SpellSlot.Q))
                     {
                         if (!targetQ.IsValidTarget(_Q.Range) && !_Q.IsReady()) return;
                         {
@@ -1296,7 +1304,7 @@ namespace AIO7UP.Champions
 
             if (ESet["UseEK"].GetValue<MenuBool>().Enabled)
             {
-                if (targetE.Health + targetE.PhysicalShield < GameObjects.Player.GetSpellDamage(targetE, SpellSlot.E))
+                if (targetE.Health + targetE.PhysicalShield < _Player.GetSpellDamage(targetE, SpellSlot.E))
                 {
                     if (!targetE.IsValidTarget(_E.Range) && !_E.IsReady()) return;
                     {
