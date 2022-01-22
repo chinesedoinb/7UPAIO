@@ -59,6 +59,9 @@ namespace AIO7UP
                     case "Oriana":
                         Oriana.OnGameLoad();
                         break;
+                    case "Rumble":
+                        Rumble.OnGameLoad();
+                        break;
                     case "Ryze":
                         Ryze.OnGameLoad();
                         break;
