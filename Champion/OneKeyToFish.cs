@@ -32,6 +32,7 @@ namespace AIO7UP.Champions
         public static Spell R;
         public static Spell Ignite;
 
+
         public static void OnGameLoad()
         {
             if (!Player.CharacterName.Contains("Fizz")) return;
@@ -218,10 +219,10 @@ namespace AIO7UP.Champions
         private static void DoCombo()
         {
             var target = TargetSelector.GetTarget(R.Range, DamageType.Magical);
-            if (R.IsReady() && ComboMenu["RKey"].GetValue<MenuKeyBind>().Active)
-            {
-                R.Cast(target);
-            }
+            //if (R.IsReady() && ComboMenu["RKey"].GetValue<MenuKeyBind>().Active)
+            //{
+                //R.Cast(target);
+            //}
 
             if (!target.IsValidTarget())
             {
