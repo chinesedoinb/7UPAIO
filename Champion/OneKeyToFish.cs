@@ -206,6 +206,7 @@ namespace AIO7UP.Champions
                     LastHit();
                     break;
             }
+            KillSteal();
         }
         public static void CastRSmart(AIHeroClient target)
         {

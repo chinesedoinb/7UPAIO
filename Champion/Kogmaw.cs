@@ -11,7 +11,7 @@ using SharpDX;
 
 namespace AIO7UP.Champions
 {
-    internal class Kogmaw
+    internal class KogMaw
     {
         private static Spell Q, W, E, R;
         private static Menu Config;

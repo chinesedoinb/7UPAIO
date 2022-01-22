@@ -47,8 +47,8 @@ namespace AIO7UP
                     case "Fizz":
                         Fizz.OnGameLoad();
                         break;
-                    case "Kogmaw":
-                        Kogmaw.OnGameLoad();
+                    case "KogMaw":
+                        KogMaw.OnGameLoad();
                         break;
                     case "Leblanc":
                         Leblanc.OnGameLoad();
