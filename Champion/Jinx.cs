@@ -384,7 +384,7 @@ namespace AIO7UP.Champions
                     if (Player.ManaPercent < EMenu["EmanaCombo"].GetValue<MenuSlider>().Value && E.IsReady())
                 return;
 
-            if (blitz != null && blitz.Distance(Player.Position) < E.Range)
+            if (blitz != null)
             {
                 foreach (var enemy in Enemies.Where(enemy => enemy.IsValidTarget(2000) && enemy.HasBuff("RocketGrab")))
                 {
@@ -416,7 +416,7 @@ namespace AIO7UP.Champions
 
             if (EMenu["Etel"].GetValue<MenuBool>().Enabled && E.IsReady())
             {
-                foreach (var Object in ObjectManager.Get<AIBaseClient>().Where(Obj => Obj.IsEnemy && Obj.Distance(Player.Position) <= E.Range && (Obj.HasBuff("teleport_target") || Obj.HasBuff("Pantheon_GrandSkyfall_Jump"))))
+                foreach (var Object in ObjectManager.Get<AIBaseClient>().Where(Obj => Obj.IsEnemy && (Obj.HasBuff("teleport_target") || Obj.HasBuff("Pantheon_GrandSkyfall_Jump"))))
                 {
                     E.Cast(Object.Position);
                 }

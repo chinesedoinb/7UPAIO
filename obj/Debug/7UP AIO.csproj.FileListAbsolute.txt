@@ -1,0 +1,16 @@
+C:\Users\ACER\Desktop\7UPAIO\obj\Debug\7UP AIO.csproj.AssemblyReference.cache
+C:\Users\ACER\Desktop\7UPAIO\obj\Debug\7UP AIO.csproj.SuggestedBindingRedirects.cache
+C:\Users\ACER\Desktop\7UPAIO\obj\Debug\7UP AIO.csproj.CoreCompileInputs.cache
+C:\Users\ACER\Desktop\7UPAIO\bin\Release\7UPAIO.exe
+C:\Users\ACER\Desktop\7UPAIO\bin\Release\7UPAIO.pdb
+C:\Users\ACER\Desktop\7UPAIO\bin\Release\EnsoulSharp.dll
+C:\Users\ACER\Desktop\7UPAIO\bin\Release\EnsoulSharp.SDK.dll
+C:\Users\ACER\Desktop\7UPAIO\bin\Release\log4net.dll
+C:\Users\ACER\Desktop\7UPAIO\bin\Release\Newtonsoft.Json.dll
+C:\Users\ACER\Desktop\7UPAIO\bin\Release\SharpDX.Direct3D9.dll
+C:\Users\ACER\Desktop\7UPAIO\bin\Release\SharpDX.dll
+C:\Users\ACER\Desktop\7UPAIO\bin\Release\SharpDX.Mathematics.dll
+C:\Users\ACER\Desktop\7UPAIO\bin\Release\EnsoulSharp.xml
+C:\Users\ACER\Desktop\7UPAIO\obj\Debug\7UP AIO.csproj.CopyComplete
+C:\Users\ACER\Desktop\7UPAIO\obj\Debug\7UPAIO.exe
+C:\Users\ACER\Desktop\7UPAIO\obj\Debug\7UPAIO.pdb

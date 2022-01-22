@@ -76,11 +76,7 @@ namespace AIO7UP.Champions
         }
 
         #region Public Methods and Operators
-        static void Main(string[] args)
-        {
-            GameEvent.OnGameLoad += OnLoad;
 
-        }
         public static int CountEnemiesNearPosition(Vector3 pos, float range)
         {
             return
