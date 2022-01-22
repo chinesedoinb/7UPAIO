@@ -5,6 +5,8 @@ Cassiopeia
 
 Ekko
 
+Fizz
+
 Jax
 
 Kogmaw
