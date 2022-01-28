@@ -45,6 +45,7 @@ namespace AIO7UP.Champions
             var MenuRyze = new Menu("Leblanc", "[7UP]Leblanc", true);
             ComboMenu = new Menu("Combo Settings", "Combo");
             ComboMenu.Add(new MenuList("ComboMode", "Combo Mode: ", new[] { "Q+R+W+E", "Q+W+R+E", "W+Q+R+E" }, 0)).Permashow();
+            //ComboMenu.Add(new MenuKeyBind("switch", "Switch Mode", Keys.G, KeyBindType.Press)).Permashow();
             ComboMenu.Add(new MenuBool("UseQCombo", "Use Q").SetValue(true));
             ComboMenu.Add(new MenuBool("UseWCombo", "Use W").SetValue(true));
             ComboMenu.Add(new MenuBool("UseECombo", "Use E").SetValue(true));
@@ -120,7 +121,7 @@ namespace AIO7UP.Champions
                     JungleClear();
                     break;
             }
-
+            Switch();
         }
         private static void Gapcloser_OnGapcloser(AIHeroClient sender, AntiGapcloser.GapcloserArgs args)
         {
@@ -173,6 +174,14 @@ namespace AIO7UP.Champions
                     Combo3();
                     break;
             }
+        }
+        private static void Switch()
+        {
+            var switches = ComboMenu["switch"].GetValue<MenuKeyBind>().Active;
+            //if (switches)
+            //{
+                
+            //}            
         }
 
         private static void Combo1() // Q+R+W+E

@@ -54,7 +54,7 @@ namespace AIO7UP.Champions
             ComboMenu.Add(new MenuBool("UseWCombo", "Use W"));
             ComboMenu.Add(new MenuBool("UseECombo", "Use E"));
             ComboMenu.Add(new MenuBool("UseRCombo", "Use R"));
-            //ComboMenu.Add(new MenuKeyBind("RKey", "Semi R Key", Keys.T, KeyBindType.Press));
+            ComboMenu.Add(new MenuKeyBind("RKey", "Semi R Key", Keys.T, KeyBindType.Press));
             ComboMenu.Add(new MenuBool("UseREGapclose", "Use R, then E for gapclose if killable"));
             MenuRyze.Add(ComboMenu);
             HarassMenu = new Menu("Harass Settings", "Harass");
@@ -208,6 +208,7 @@ namespace AIO7UP.Champions
                     break;
             }
             KillSteal();
+            Semi();
         }
         public static void CastRSmart(AIHeroClient target)
         {
@@ -216,6 +217,7 @@ namespace AIO7UP.Champions
 
             R.Cast(castPosition);
         }
+
         private static void DoCombo()
         {
             var target = TargetSelector.GetTarget(R.Range, DamageType.Magical);
@@ -448,6 +450,14 @@ namespace AIO7UP.Champions
                         Ignite.Cast(target);
                     }
                 }
+            }
+        }
+        public static void Semi()
+        {
+            var target = TargetSelector.GetTarget(R.Range, DamageType.Magical);
+            if (R.IsReady() && ComboMenu["RKey"].GetValue<MenuKeyBind>().Active)
+            {
+                R.Cast(target);
             }
         }
     }

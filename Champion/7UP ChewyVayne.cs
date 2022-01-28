@@ -51,13 +51,14 @@ namespace AIO7UP.Champions
             MenuRyze.Add(LaneClearMenu);
             condemnMenu = new Menu("Condemn Settings", "ConDAMM_Settings");
             condemnMenu.Add(new MenuSlider("EDistance", "E Push Distance", 400, 300, 600));
-            condemnMenu.Add(new MenuKeyBind("Qout", "Q out AA", Keys.T, KeyBindType.Toggle, false));
+            condemnMenu.Add(new MenuKeyBind("Qout", "Q out AA", Keys.G, KeyBindType.Toggle, false));
             condemnMenu.Add(new MenuBool("QIntoE", "Q to E target").SetValue(true));
             condemnMenu.Add(new MenuBool("EPeel", "Peel with E").SetValue(false));
-            condemnMenu.Add(new MenuBool("EKS", "Finish with E").SetValue(true));
+            //condemnMenu.Add(new MenuBool("EKS", "Finish with E").SetValue(true));
             condemnMenu.Add(new MenuBool("GapcloseE", "E on Gapcloser").SetValue(true));
             condemnMenu.Add(new MenuBool("InterruptE", "E to Interrupt").SetValue(true));
             condemnMenu.Add(new MenuBool("Wardbush", "Ward bush on E").SetValue(true));
+            condemnMenu.Add(new MenuKeyBind("EKey", "Semi E Key", Keys.T, KeyBindType.Press));
             MenuRyze.Add(condemnMenu);
             drawMenu = new Menu("Drawing", "Drawing");
             drawMenu.Add(new MenuBool("DrawQ", "Draw Q").SetValue(true));
@@ -100,6 +101,7 @@ namespace AIO7UP.Champions
                     DoHarass();                   
                     break;
             }
+            Semi();
         }
 
         private static void Orbwalker_OnAfterAttack(object sender, AfterAttackEventArgs args)
@@ -243,6 +245,7 @@ namespace AIO7UP.Champions
             }
             return collision;
         }
+
         private static void DoCombo()
         {
             var useQ = ComboMenu["UseQCombo"].GetValue<MenuBool>().Enabled;
@@ -252,7 +255,7 @@ namespace AIO7UP.Champions
             var qIntoE = condemnMenu["QIntoE"].GetValue<MenuBool>().Enabled;
             var useR = ComboMenu["UseRCombo"].GetValue<MenuBool>().Enabled;
             var useREnemies = ComboMenu["RComboEnemies"].GetValue<MenuSlider>().Value;
-            var useEFinisher = condemnMenu["EKS"].GetValue<MenuBool>().Enabled;
+            //var useEFinisher = condemnMenu["EKS"].GetValue<MenuBool>().Enabled;
 
             var target = TargetSelector.GetTarget(
                 GameObjects.Player.GetRealAutoAttackRange(GameObjects.Player) + 300,
@@ -301,10 +304,10 @@ namespace AIO7UP.Champions
             {
                 R.Cast();
             }
-            if (useEFinisher && E.IsReady() && GameObjects.Player.GetSpellDamage(target, SpellSlot.E) > target.Health)
-            {
-                E.Cast(target);
-            }
+            //if (useEFinisher && E.IsReady() && GameObjects.Player.GetSpellDamage(target, SpellSlot.E) > target.Health)
+            //{
+                //E.Cast(target);
+            //}
 
         }
         private static void DoHarass()
@@ -336,7 +339,14 @@ namespace AIO7UP.Champions
         {
             return target.GetBuffCount("VayneSilveredDebuff");
         }
-
+        private static void Semi()
+        {
+            var t = TargetSelector.GetTarget(E.Range, DamageType.Physical);
+            if (condemnMenu["EKey"].GetValue<MenuKeyBind>().Active)
+            {
+                E.Cast(t);
+            }
+        }
 
     }
 }
