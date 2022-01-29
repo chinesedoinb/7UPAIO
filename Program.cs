@@ -32,6 +32,9 @@ namespace AIO7UP
                     case "Vayne":
                         Vayne.OnGameLoad();
                         break;
+                    case "Caitlyn":
+                        Caitlyn.OnGameLoad();
+                        break;
                     case "Cassiopeia":
                         Cassiopeia.OnGameLoad();
                     break;
