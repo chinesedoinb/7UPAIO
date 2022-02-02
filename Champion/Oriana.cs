@@ -11,7 +11,7 @@ using SharpDX;
 
 namespace AIO7UP.Champions
 {
-    internal class Oriana
+    internal class Orianna
     {
         public static Menu Config;
 
