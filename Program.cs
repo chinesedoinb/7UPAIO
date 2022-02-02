@@ -74,6 +74,9 @@ namespace AIO7UP
                     case "Viktor":
                         Viktor.OnGameLoad();
                         break;
+					case "Xerath":
+                        Xerath.OnGameLoad();
+                        break;
                     case "Zed":
                         Zed.OnGameLoad();
                         break;
