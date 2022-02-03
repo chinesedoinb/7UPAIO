@@ -59,8 +59,8 @@ namespace AIO7UP
                     case "Olaf":
                         Olaf.OnGameLoad();
                         break;
-                    case "Oriana":
-                        Oriana.OnGameLoad();
+                    case "Orianna":
+                        Orianna.OnGameLoad();
                         break;
                     case "Rumble":
                         Rumble.OnGameLoad();
