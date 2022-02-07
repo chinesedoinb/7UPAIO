@@ -1,5 +1,7 @@
-7UPAIO 
+7UPAIO https://discord.gg/wpwGgXDw4X
 Support champ
+
+Caitlyn
 
 Cassiopeia
 
@@ -8,6 +10,8 @@ Ekko
 Fizz
 
 Jax
+
+Jinx
 
 Kogmaw
 
