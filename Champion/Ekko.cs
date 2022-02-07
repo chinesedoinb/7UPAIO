@@ -111,7 +111,7 @@ namespace AIO7UP.Champions
             Drawing.OnDraw += Drawing_OnDraw;
             AntiGapcloser.OnGapcloser += Gapcloser_OnGapCloser;
             Interrupter.OnInterrupterSpell += Interupt;
-            //AIHeroClient.OnProcessSpellCast += AIHeroClient_OnProcessSpellCast;
+            AIBaseClient.OnProcessSpellCast += AIHeroClient_OnProcessSpellCast;
             GameObject.OnCreate += Game_On_Create;
             GameObject.OnDelete += Game_On_Delete;
 
@@ -199,9 +199,9 @@ namespace AIO7UP.Champions
         {
             /*if (E.IsReady())
             {
-                var cursorPos = Game.CursorPosPressed;
-                var castPos = Player.Instance.Position.Distance(cursorPos) <= E.Range ? cursorPos : Player.Instance.Position.Extend(cursorPos, E.Range).To3D();
-                Player.CastSpell(SpellSlot.E, Game.CursorPosRaw);
+                var cursorPos = Game.CursorPos;
+                var castPos = _Player.Position.Distance(cursorPos) <= E.Range ? cursorPos : _Player.Position.Extend(cursorPos, E.Range).To3D();
+                _Player.GetLastCastedSpell(SpellSlot.E, Game.CursorPos);
             }*/
         }
 
