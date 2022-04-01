@@ -32,11 +32,11 @@ namespace AIO7UP.Champions
             if (!Player.CharacterName.Contains("Xerath")) return;
             Bootstrap.Init(null);
             Q = new Spell(SpellSlot.Q, 750f);
-            Q.SetSkillshot(0.60f, 95f, float.MaxValue, false, SpellType.Line);
+            Q.SetSkillshot(0.55f, 95f, float.MaxValue, false, SpellType.Line);
             Q.SetCharged("XerathArcanopulseChargeUp", "XerathArcanopulseChargeUp", 750, 1550, 1.5f);
 
             W = new Spell(SpellSlot.W, 950f);
-            W.SetSkillshot(0.70f, 125f, float.MaxValue, false, SpellType.Circle);
+            W.SetSkillshot(0.65f, 125f, float.MaxValue, false, SpellType.Circle);
 
             E = new Spell(SpellSlot.E, 1050f);
             E.SetSkillshot(0.25f, 60f, 1400f, true, SpellType.Line);
