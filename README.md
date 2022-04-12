@@ -9,6 +9,8 @@ Ekko
 
 Fizz
 
+Hecarim
+
 Jax
 
 Jinx
@@ -22,6 +24,8 @@ Olaf
 Oriana
 
 Ryze
+
+Shyvana
 
 Talon
 
