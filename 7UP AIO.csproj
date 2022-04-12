@@ -91,6 +91,7 @@
     <Compile Include="Champion\Olaf.cs" />
     <Compile Include="Champion\OneKeyToFish.cs" />
     <Compile Include="Champion\Oriana.cs" />
+    <Compile Include="Champion\Shyvana.cs" />
     <Compile Include="Champion\Viktor.cs" />
     <Compile Include="Champion\Ryze.cs" />
     <Compile Include="Champion\Leblanc.cs" />
