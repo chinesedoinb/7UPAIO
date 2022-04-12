@@ -1,4 +1,4 @@
-7UPAIO https://discord.gg/wpwGgXDw4X
+7UPAIO 
 Support champ
 
 Caitlyn
