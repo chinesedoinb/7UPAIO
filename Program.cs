@@ -41,6 +41,9 @@ namespace AIO7UP
                     case "Ekko":
                         Ekko.OnGameLoad();
                         break;
+                    case "Hecarim":
+                        Hecarim.OnGameLoad();
+                        break;
                     case "Jax":
                         Jax.OnGameLoad();
                         break;
@@ -70,6 +73,9 @@ namespace AIO7UP
                         break;
                     case "Talon":
                         Talon.OnGameLoad();
+                        break;
+                    case "Shyvana":
+                        Shyvana.OnGameLoad();
                         break;
                     case "Viktor":
                         Viktor.OnGameLoad();
