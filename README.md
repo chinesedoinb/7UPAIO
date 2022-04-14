@@ -1,4 +1,4 @@
-7UPAIO https://discord.gg/wpwGgXDw4X
+7UPAIO 
 Support champ
 
 Caitlyn
@@ -8,6 +8,8 @@ Cassiopeia
 Ekko
 
 Fizz
+
+Hecarim
 
 Jax
 
@@ -22,6 +24,8 @@ Olaf
 Oriana
 
 Ryze
+
+Shyvana
 
 Talon
 
