@@ -10,14 +10,14 @@ using Color = System.Drawing.Color;
 using static EnsoulSharp.SDK.Items;
 using SharpDX.Direct3D9;
 
-namespace AIO7UP.Champions
+namespace ElRumble
 {
-    internal class Rumble
+    public class ElRumbleMenu
     {
         private static Menu Menu { get; set; }
         public static Menu comboMenu, harassMenu, heatMenu, clearMenu, miscMenu;
 
-        public static void OnGameLoad()
+        public static void Initialize()
         {
 
             Menu = new Menu("ElRumble", "[7UP]Rumble",true);

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using EnsoulSharp;
 using EnsoulSharp.SDK;
 using AIO7UP.Champions;
+using ElRumble;
 using System.Threading.Tasks;
 using EnsoulSharp.SDK.MenuUI;
 using System.Collections.Generic;
@@ -66,13 +67,16 @@ namespace AIO7UP
                         Orianna.OnGameLoad();
                         break;
                     case "Rumble":
-                        Rumble.OnGameLoad();
+                        Rumble.OnLoad();
                         break;
                     case "Ryze":
                         Ryze.OnGameLoad();
                         break;
                     case "Talon":
                         Talon.OnGameLoad();
+                        break;
+                    case "Taliyah":
+                        Taliyah.OnGameLoad();
                         break;
                     case "Shyvana":
                         Shyvana.OnGameLoad();

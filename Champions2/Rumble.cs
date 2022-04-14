@@ -9,7 +9,7 @@ using SharpDX;
 using Color = System.Drawing.Color;
 using static EnsoulSharp.SDK.Items;
 using SharpDX.Direct3D9;
-namespace AIO7UP.Champions
+namespace ElRumble
 {
 
  
@@ -26,7 +26,7 @@ namespace AIO7UP.Champions
         R1
     }
 
-    internal static class ELRumble
+    internal static class Rumble
     {
         #region Static Fields
 
@@ -118,9 +118,9 @@ namespace AIO7UP.Champions
 
         public static void OnDraw(EventArgs args)
         {
-            var drawQ = getMenuBoolItem(Rumble.miscMenu, "ElRumble.Draw.Q");
-            var drawE = getMenuBoolItem(Rumble.miscMenu, "ElRumble.Draw.E");
-            var drawR = getMenuBoolItem(Rumble.miscMenu, "ElRumble.Draw.R");
+            var drawQ = getMenuBoolItem(ElRumbleMenu.miscMenu, "ElRumble.Draw.Q");
+            var drawE = getMenuBoolItem(ElRumbleMenu.miscMenu, "ElRumble.Draw.E");
+            var drawR = getMenuBoolItem(ElRumbleMenu.miscMenu, "ElRumble.Draw.R");
 
 
             if (drawQ)
@@ -214,7 +214,7 @@ namespace AIO7UP.Champions
             spells[Spells.R1].SetSkillshot(0.25f, 110, 2600, false, SpellType.Line);
             spells[Spells.E].SetSkillshot(0.45f, 90, 1200, true, SpellType.Line);
 
-            Rumble.OnGameLoad();
+            ElRumbleMenu.Initialize();
             Game.OnUpdate += OnUpdate;
             Drawing.OnDraw += OnDraw;
         }
@@ -301,8 +301,8 @@ namespace AIO7UP.Champions
 
         private static void KeepHeat()
         {
-            var useQ = getMenuBoolItem(Rumble.heatMenu, "ElRumble.Heat.Q");
-            var useW = getMenuBoolItem(Rumble.heatMenu, "ElRumble.Heat.W");
+            var useQ = getMenuBoolItem(ElRumbleMenu.heatMenu, "ElRumble.Heat.Q");
+            var useW = getMenuBoolItem(ElRumbleMenu.heatMenu, "ElRumble.Heat.W");
 
             if (Player.Mana < 50)
             {
@@ -320,8 +320,8 @@ namespace AIO7UP.Champions
 
         private static void OnClear()
         {
-            var useQ = getMenuBoolItem(Rumble.clearMenu, "ElRumble.LaneClear.Q");
-            var useE = getMenuBoolItem(Rumble.clearMenu, "ElRumble.LaneClear.E");
+            var useQ = getMenuBoolItem(ElRumbleMenu.clearMenu, "ElRumble.LaneClear.Q");
+            var useE = getMenuBoolItem(ElRumbleMenu.clearMenu, "ElRumble.LaneClear.E");
 
             var minions = GameObjects.GetMinions(Player.Position, spells[Spells.Q].Range);
             if (minions.Count <= 0)
@@ -354,12 +354,12 @@ namespace AIO7UP.Champions
                 return;
             }
 
-            var useQ = getMenuBoolItem(Rumble.comboMenu, "ElRumble.Combo.Q");
-            var useW = getMenuBoolItem(Rumble.comboMenu, "ElRumble.Combo.W");
-            var useE = getMenuBoolItem(Rumble.comboMenu, "ElRumble.Combo.E");
-            var useR = getMenuBoolItem(Rumble.comboMenu, "ElRumble.Combo.R");
-            var useI = getMenuBoolItem(Rumble.comboMenu, "ElRumble.Combo.Ignite");
-            var countEnemies = getMenuSliderItem(Rumble.comboMenu, "ElRumble.Combo.Count.Enemies");
+            var useQ = getMenuBoolItem(ElRumbleMenu.comboMenu, "ElRumble.Combo.Q");
+            var useW = getMenuBoolItem(ElRumbleMenu.comboMenu, "ElRumble.Combo.W");
+            var useE = getMenuBoolItem(ElRumbleMenu.comboMenu, "ElRumble.Combo.E");
+            var useR = getMenuBoolItem(ElRumbleMenu.comboMenu, "ElRumble.Combo.R");
+            var useI = getMenuBoolItem(ElRumbleMenu.comboMenu, "ElRumble.Combo.Ignite");
+            var countEnemies = getMenuSliderItem(ElRumbleMenu.comboMenu, "ElRumble.Combo.Count.Enemies");
 
             if (useQ && spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range))
             {
@@ -407,8 +407,8 @@ namespace AIO7UP.Champions
                 return;
             }
 
-            var useQ = getMenuBoolItem(Rumble.harassMenu, "ElRumble.Harass.Q");
-            var useE = getMenuBoolItem(Rumble.harassMenu, "ElRumble.Harass.E");
+            var useQ = getMenuBoolItem(ElRumbleMenu.harassMenu, "ElRumble.Harass.Q");
+            var useE = getMenuBoolItem(ElRumbleMenu.harassMenu, "ElRumble.Harass.E");
 
             if (useQ && spells[Spells.Q].IsReady() && spells[Spells.Q].IsInRange(target))
             {
@@ -427,8 +427,8 @@ namespace AIO7UP.Champions
 
         private static void OnJungleClear()
         {
-            var useQ = getMenuBoolItem(Rumble.clearMenu, "ElRumble.JungleClear.Q");
-            var useE = getMenuBoolItem(Rumble.clearMenu, "ElRumble.JungleClear.E");
+            var useQ = getMenuBoolItem(ElRumbleMenu.clearMenu, "ElRumble.JungleClear.Q");
+            var useE = getMenuBoolItem(ElRumbleMenu.clearMenu, "ElRumble.JungleClear.E");
 
             var minions = GameObjects.GetMinions(
                 ObjectManager.Player.Position,
@@ -456,7 +456,7 @@ namespace AIO7UP.Champions
 
         private static void OnLastHit()
         {
-            var useE = getMenuBoolItem(Rumble.clearMenu, "ElRumble.LastHit.E");
+            var useE = getMenuBoolItem(ElRumbleMenu.clearMenu, "ElRumble.LastHit.E");
             if (useE && spells[Spells.E].IsReady())
             {
                 var allMinions = GameObjects.GetMinions(ObjectManager.Player.Position, spells[Spells.E].Range);
@@ -503,13 +503,13 @@ namespace AIO7UP.Champions
                 OnLastHit();
             }
 
-            var keepHeat = getMenuKeyBindItem(Rumble.heatMenu, "ElRumble.KeepHeat.Activated");
+            var keepHeat = getMenuKeyBindItem(ElRumbleMenu.heatMenu, "ElRumble.KeepHeat.Activated");
             if (keepHeat)
             {
                 KeepHeat();
             }
 
-            if (getMenuKeyBindItem(Rumble.miscMenu, "ElRumble.Misc.R") && spells[Spells.R].IsReady())
+            if (getMenuKeyBindItem(ElRumbleMenu.miscMenu, "ElRumble.Misc.R") && spells[Spells.R].IsReady())
             {
                 CastR();
             }

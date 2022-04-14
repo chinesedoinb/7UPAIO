@@ -563,95 +563,56 @@ namespace AIO7UP.Champions
 
         private static void LaneClear()
         {
-            //if (!Orbwalker.CanMove()) return;
+            /*var minionObj = GameObjects.GetMinions(Q.Range, MinionTypes.All, MinionTeam.Ally,
+    MinionOrderTypes.MaxHealth);
+            var lanemana = LaneClearMenu["ManaFarm"].GetValue<MenuSlider>().Value;
 
-            //var rangedMinionsW = GameObjects.GetMinions(ObjectManager.Player.Position, W.Range + W.Width + 30,
-                //MinionTypes.Ranged);
-            //var allMinionsW = GameObjects.GetMinions(ObjectManager.Player.Position, W.Range + W.Width + 30,
-                //MinionTypes.All);
+            if (!minionObj.Any())
+            {
+                return;
+            }
 
-            //var allMinions = GameObjects.GetMinions(Player.Position, Q.Range + Q.Width + 30, MinionTypes.All);
+            if (minionObj.Count > LaneClearMenu["waveNumW"].GetValue<MenuSlider>().Value && Player.ManaPercent >= lanemana)
+                if (Orbwalker.ActiveMode == OrbwalkerMode.LaneClear && LaneClearMenu["UseWFarm"].GetValue<MenuBool>().Enabled)
+                {
+                    {
+                        W.Cast();
+                    }
+                }
 
-            //var FMana = LaneClearMenu["ManaFarm"].GetValue<MenuSlider>().Value;
-            //var MPercent = Player.Mana * 100 / Player.MaxMana;
-
-
-            //var useQi = LaneClearMenu["UseQFarm"].GetValue<MenuBool>().Enabled;
-            //var useWi = LaneClearMenu["UseWFarm"].GetValue<MenuBool>().Enabled;
-            //var useEi = LaneClearMenu["waveNumW"].GetValue<MenuSlider>().Value;
-
-            //var useQ = (laneClear && MPercent >= FMana && (useQi = 1 || useQi = 2)) || (!laneClear && MPercent >= FMana && (useQi = 0 || useQi = 2));
-            //var useW = (laneClear && MPercent >= FMana && (useWi = 1 || useWi = 2)) || (!laneClear && MPercent >= FMana && (useWi = 0 || useWi = 2));
-            //var useE = (laneClear && MPercent >= FMana && (useEi = 1 || useEi = 2)) || (!laneClear && MPercent >= FMana && (useEi = 0 || useEi = 2));
-
-            //var fl1 = W.GetCircularFarmLocation(rangedMinionsW, W.Width);
-            //var fl2 = W.GetCircularFarmLocation(allMinionsW, W.Width);
-
-            //if (useQ)
-            //{
-                //foreach (var minion in allMinions)
-                //{
-                    //if (minion.IsValidTarget() &&
-                        //minion.Health < 0.75 * ObjectManager.Player.GetSpellDamage(minion, SpellSlot.Q))
-                    //{
-                        //Q.CastOnUnit(minion);
-                    //}
-                //}
-            //}
-            //else if (useW)
-            //{
-                //if (fl1.MinionsHit >= LaneClearMenu["waveNumW"].GetValue<MenuSlider>().Value && fl1.MinionsHit >= 3)
-                //{
-                    //W.Cast(fl1.Position);
-                //}
-            //}
-            //else if (useE)
-            //{
-                //foreach (var minion in allMinions)
-                //{
-                    //if (minion.IsValidTarget(E.Range) &&
-                        //minion.Health < 0.80 * ObjectManager.Player.GetSpellDamage(minion, SpellSlot.E))
-                    //{
-                        //E.Cast(minion);
-                    //}
-                //}
-            //}
-            //if (laneClear)
-            //{
-                //foreach (var minion in allMinions)
-                //{
-                    //if (useQ && minion.IsValidTarget() &&
-                        //minion.Health < 0.80 * ObjectManager.Player.GetSpellDamage(minion, SpellSlot.Q))
-                        //Q.CastOnUnit(minion);
-
-                    //if (useW)
-
-                        //if (fl1.MinionsHit >= LaneClearMenu["waveNumW"].GetValue<MenuSlider>().Value && fl1.MinionsHit >= 3)
-                        //{
-                            //W.Cast(fl1.Position);
-                        //}
-
-                    //if (useE)
-                        //E.Cast(minion);
-                //}
-            //}
-
+            if (Player.ManaPercent >= lanemana)
+            {
+                if (Orbwalker.ActiveMode == OrbwalkerMode.LaneClear && LaneClearMenu["UseQFarm"].GetValue<MenuBool>().Enabled)
+                {
+                    Q.Cast();
+                }
+            }*/
 
         }
 
         private static void JungleClear()
         {
-            //var mobs = GameObjects.GetMinions(Player.Position, W.Range,
-                //MinionTypes.All,
-                //MinionTeam.Ally, MinionOrderTypes.MaxHealth);
-            //if (mobs.Count > 0)
-            //{
-                //var mob = mobs[0];
-                //Q.Cast();
-                //W.Cast();
-                //E.Cast();
-            //}
+            /*var minionObj = GameObjects.Jungle.Where(j => j.IsValidTarget(Q.Range)).FirstOrDefault(j => j.IsValidTarget(Q.Range));
 
+            if (!minionObj.IsJungle())
+            {
+                return;
+            }
+
+            if (Orbwalker.ActiveMode == OrbwalkerMode.LaneClear && LaneClearMenu["UseWJFarm"].GetValue<MenuBool>().Enabled)
+            {
+                {
+                    W.Cast();
+                }
+            }
+            if (Orbwalker.ActiveMode == OrbwalkerMode.LaneClear && LaneClearMenu["UseQJFarm"].GetValue<MenuBool>().Enabled)
+            {
+                Q.Cast();
+            }
+            if (Orbwalker.ActiveMode == OrbwalkerMode.LaneClear && LaneClearMenu["UseEJFarm"].GetValue<MenuBool>().Enabled)
+            {
+                E.Cast();
+            }*/
         }
 
     }
