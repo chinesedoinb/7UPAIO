@@ -39,7 +39,7 @@ namespace AIO7UP.Champions
             W.SetSkillshot(1500, 500, 650, false, SpellType.Circle);
             E = new Spell(SpellSlot.E, 450);
             R = new Spell(SpellSlot.R, 375);
-            Thm = new Font(Drawing.Direct3DDevice, new FontDescription { FaceName = "Tahoma", Height = 16, Weight = FontWeight.Bold, OutputPrecision = FontPrecision.Default, Quality = FontQuality.ClearType });
+            Thm = new Font(Drawing.Direct3DDevice9, new FontDescription { FaceName = "Tahoma", Height = 16, Weight = FontWeight.Bold, OutputPrecision = FontPrecision.Default, Quality = FontQuality.ClearType });
             var MenuEkko = new Menu("Ekko", "[7UP]Ekko", true);
             MenuEkko.Add(new MenuSeparator("Mercedes7", "Mercedes7"));
             ComboMenu = new Menu("Combo Settings", "Combo");

@@ -302,7 +302,7 @@ namespace AIO7UP.Champions
             Config.Attach();
 
             TextAxe = new Font(
-                Drawing.Direct3DDevice,
+                Drawing.Direct3DDevice9,
                 new FontDescription
                 {
                     FaceName = "Segoe UI",
@@ -311,7 +311,7 @@ namespace AIO7UP.Champions
                     Quality = FontQuality.ClearTypeNatural,
                 });
             TextLittle = new Font(
-                Drawing.Direct3DDevice,
+                Drawing.Direct3DDevice9,
                 new FontDescription
                 {
                     FaceName = "Segoe UI",
