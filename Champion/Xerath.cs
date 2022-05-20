@@ -144,10 +144,6 @@ namespace AIO7UP.Champions
                 return;
             }
 
-            if (Q.IsCharging || ObjectManager.Player.HasBuff("XerathLocusOfPower2"))
-            {
-                return;
-            }
 
             if (Misc["EAntiGapcloser"].GetValue<MenuBool>().Enabled && E.IsReady() && args.DangerLevel >= Interrupter.DangerLevel.Medium && sender.DistanceToPlayer() < E.Range)
             {
@@ -173,10 +169,10 @@ namespace AIO7UP.Champions
             }
 
             //Harass when enemy do attack
-            if (HarassMenu["HarassQ"].GetValue<MenuBool>().Enabled && sender.Type == Player.Type && sender.Team != Player.Team && args.SData.Name.ToLower().Contains("attack") && Player.Distance(sender) <= Math.Pow(Q.Range, 2) && Player.Mana / Player.MaxMana * 100 > HarassMenu["Mana"].GetValue<MenuSlider>().Value)
-            {
-                Q.Cast((AIHeroClient)sender);
-            }
+            //if (HarassMenu["HarassQ"].GetValue<MenuBool>().Enabled && sender.Type == Player.Type && sender.Team != Player.Team && args.SData.Name.ToLower().Contains("attack") && Player.Distance(sender) <= Math.Pow(Q.Range, 2) && Player.Mana / Player.MaxMana * 100 > HarassMenu["Mana"].GetValue<MenuSlider>().Value)
+            //{
+                //Q.Cast((AIHeroClient)sender);
+            //}
             if (sender.IsValid && sender.Team == ObjectManager.Player.Team && args.SData.Name == "YasuoWMovingWall")
             {
                 WallCastT = Environment.TickCount;
@@ -197,10 +193,6 @@ namespace AIO7UP.Champions
                 return;
             }
 
-            if (Q.IsCharging || ObjectManager.Player.HasBuff("XerathLocusOfPower2"))
-            {
-                return;
-            }
 
             if (Misc["EAntiGapcloser"].GetValue<MenuBool>().Enabled && E.IsReady() && args.EndPosition.DistanceToPlayer() < 250)
             {

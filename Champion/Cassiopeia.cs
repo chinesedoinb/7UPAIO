@@ -38,10 +38,15 @@ namespace AIO7UP.Champions
             {
                 return;
             }
-            _Q = new Spell(SpellSlot.Q, 750);//, SkillShotType.Circular, 400, int.MaxValue, 130);
-            _W = new Spell(SpellSlot.W, 800);//, SkillShotType.Circular, 250, 250, 160);
+            _Q = new Spell(SpellSlot.Q, 850);//, SkillShotType.Circular, 400, int.MaxValue, 130);
+            _W = new Spell(SpellSlot.W, 700);//, SkillShotType.Circular, 250, 250, 160);
             _E = new Spell(SpellSlot.E, 700);
             _R = new Spell(SpellSlot.R, 800);//, SkillShotType.Cone, 250, 250, 80);
+
+            _Q.SetSkillshot(400, int.MaxValue, 130, false, SpellType.Circle);
+            _W.SetSkillshot(250, 250, 160, false, SpellType.Circle);
+            _R.SetSkillshot(250, 250, 80, false, SpellType.Cone);
+
             Zhonia = new Item((int)ItemId.Zhonyas_Hourglass, 450);
             Seraph = new Item((int)ItemId.Seraphs_Embrace, 450);
             _Ignite = new Spell(ObjectManager.Player.GetSpellSlot("summonerdot"), 600);
@@ -592,6 +597,15 @@ namespace AIO7UP.Champions
             }
             if (HighP)
             {
+                if(QSet["UseQ"].GetValue<MenuBool>().Enabled && _Q.IsReady())
+                {
+                    var targetQ = TargetSelector.GetTarget(_Q.Range, DamageType.Magical);
+
+                    if (targetQ != null)
+                    {
+                        _Q.Cast(targetQ);
+                    }
+                }
                 if (ESet["UseE"].GetValue<MenuBool>().Enabled)
                 {
                     if (!target.IsValidTarget(_E.Range) && !_E.IsReady())

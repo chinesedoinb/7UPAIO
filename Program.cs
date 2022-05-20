@@ -1,16 +1,8 @@
 ﻿using System;
-using System.Net;
-using System.Diagnostics;
 using EnsoulSharp;
 using EnsoulSharp.SDK;
 using AIO7UP.Champions;
 using ElRumble;
-using System.Threading.Tasks;
-using EnsoulSharp.SDK.MenuUI;
-using System.Collections.Generic;
-using System.Linq;
-using SharpDX;
-using Color = System.Drawing.Color;
 
 
 namespace AIO7UP
@@ -53,6 +45,9 @@ namespace AIO7UP
                         break;
                     case "Fizz":
                         Fizz.OnGameLoad();
+                        break;
+                    case "Karthus":
+                        Karthus.OnGameLoad();
                         break;
                     case "KogMaw":
                         KogMaw.OnGameLoad();
