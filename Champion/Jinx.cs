@@ -40,7 +40,7 @@ namespace AIO7UP.Champions
             Bootstrap.Init(null);
             Q = new Spell(SpellSlot.Q);
             W = new Spell(SpellSlot.W, 1500f);
-            E = new Spell(SpellSlot.E, 900f);
+            E = new Spell(SpellSlot.E, 925f);
             R = new Spell(SpellSlot.R, 3000f);
 
             W.SetSkillshot(0.6f, 60f, 3300f, true, SpellType.Line);
@@ -294,7 +294,7 @@ namespace AIO7UP.Champions
             if (RMenu["useR"].GetValue<MenuKeyBind>().Active && R.IsReady())
             {
                 var t = TargetSelector.GetTarget(R.Range, DamageType.Physical);
-                if (t.IsValidTarget())
+                if (t.IsValidTarget() && E.GetPrediction(t).Hitchance >= HitChance.High)
                 {
                     R.Cast(t);
                 }
@@ -421,7 +421,7 @@ namespace AIO7UP.Champions
                 }*/
 
 
-                if (t.IsValidTarget(E.Range) && E.GetPrediction(t).CastPosition.Distance(t.Position) > 200)
+                if (t.IsValidTarget(E.Range))
                 {
                     if (!t.CanMove)
                     {
@@ -429,7 +429,7 @@ namespace AIO7UP.Champions
                     }
                     else
                     {
-                        if (E.GetPrediction(t).Hitchance >= HitChance.VeryHigh)
+                        if (E.GetPrediction(t).Hitchance >= HitChance.High)
                         {
                             E.Cast(t);
                         }
