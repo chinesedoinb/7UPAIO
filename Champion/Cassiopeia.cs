@@ -171,7 +171,7 @@ namespace AIO7UP.Champions
             {
                 if (target == null)
                     return;
-                Drawing.DrawCircle(_Q.GetPrediction(target).CastPosition, _Q.Width, System.Drawing.Color.Violet);
+                Drawing.DrawCircleIndicator(_Q.GetPrediction(target).CastPosition, _Q.Width, System.Drawing.Color.Violet);
 
             }
             if (ComboMenu["DrawStatus"].GetValue<MenuBool>().Enabled)

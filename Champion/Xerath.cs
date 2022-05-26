@@ -100,7 +100,7 @@ namespace AIO7UP.Champions
             MenuRyze.Attach();
             Drawing.OnDraw += Drawing_OnDraw;
             Game.OnUpdate += Game_OnUpdate;
-            //Orbwalker.OnBeforeAttack += Orbwalker_OnBeforeAttack;
+            Orbwalker.OnBeforeAttack += Orbwalker_OnBeforeAttack;
             AntiGapcloser.OnGapcloser += Gapcloser_OnGapcloser;
             Interrupter.OnInterrupterSpell += OnInterrupterSpell;
             AIBaseClient.OnProcessSpellCast += Obj_AI_Base_OnProcessSpellCast;
@@ -204,14 +204,15 @@ namespace AIO7UP.Champions
             }
         }
 
-        //public static void Orbwalker_OnBeforeAttack(object sender, BeforeAttackEventArgs args)
-        //{
-            //bool orbwalkAA = false;
-            //if (orbwalkAA = !Q.IsReady() && (!W.IsReady() || !E.IsReady())) ;
-            //{
-                //args.Process = orbwalkAA;
-            //}
-        //}
+        public static void Orbwalker_OnBeforeAttack(object sender, BeforeAttackEventArgs args)
+        {
+            bool orbwalkAA = false;
+            if (orbwalkAA = !Q.IsReady() && (!W.IsReady() || !E.IsReady())) ;
+            {
+                args.Process = orbwalkAA;
+            }
+
+        }
 
         private static void Game_OnUpdate(EventArgs args)
         {

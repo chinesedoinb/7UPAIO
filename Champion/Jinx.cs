@@ -20,6 +20,7 @@ namespace AIO7UP.Champions
             "cassiopeiapetrifyinggaze","ezrealtrueshotbarrage","galioidolofdurand","luxmalicecannon", "missfortunebullettime","infiniteduress","alzaharnethergrasp","lucianq","velkozr","rocketgrabmissile"
         };
         private static List<AIHeroClient> Enemies = new List<AIHeroClient>();
+        private static float bigGunRange;
         public static float QMANA;
         public static float WMANA;
         public static float EMANA;
@@ -76,30 +77,33 @@ namespace AIO7UP.Champions
             MenuRyze.Add(WMenu);
             EMenu = new Menu("EMenu", "EMenu");
             EMenu.Add(new MenuBool("Ecombo", "Combo E"));
+            EMenu.Add(new MenuBool("AutoEWhenEnemyCastAAM", "Use Auto E When Melee Enemy Cast AA On Me"));
             EMenu.Add(new MenuKeyBind("useE", "Semi cast E key", Keys.G, KeyBindType.Press));
             EMenu.Add(new MenuBool("Etel", "E on enemy teleport"));
             EMenu.Add(new MenuBool("Ecc", "E on CC"));
-            EMenu.Add(new MenuBool("Eslow", "E on slow"));
-            EMenu.Add(new MenuBool("Edash", "E on dash"));
-            EMenu.Add(new MenuBool("Espell", "E on special spell detection"));
-            EMenu.Add(new MenuSlider("Eaoe", "E if can catch x enemies", 3, 0, 5));
-            EMenu.Add(new MenuSeparator("E Gap", "E Gap"));
-            EMenu.Add(new MenuList("EmodeGC", "Gap Closer position mode", new[] { "Dash end position", "Jinx position" }, 0));
+            //EMenu.Add(new MenuBool("Eslow", "E on slow"));
+            //EMenu.Add(new MenuBool("Edash", "E on dash"));
+            //EMenu.Add(new MenuBool("Espell", "E on special spell detection"));
+            //EMenu.Add(new MenuSlider("Eaoe", "E if can catch x enemies", 3, 0, 5));
+            EMenu.Add(new MenuBool("E Gap", "E Gap"));
+            /*EMenu.Add(new MenuList("EmodeGC", "Gap Closer position mode", new[] { "Dash end position", "Jinx position" }, 0));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
                 EMenu.Add(new MenuBool("EGCchampion", "Cast on enemy:" + enemy.CharacterName));
-            EMenu.Add(new MenuSlider("EmanaCombo", "E mana", 30, 0, 100));
+            EMenu.Add(new MenuSlider("EmanaCombo", "E mana", 30, 0, 100));*/
             MenuRyze.Add(EMenu);
             RMenu = new Menu("RMenu", "RMenu");
             RMenu.Add(new MenuBool("Rks", "R KS"));
             RMenu.Add(new MenuKeyBind("useR", "Semi-manual cast R key", Keys.T, KeyBindType.Press));
-            RMenu.Add(new MenuList("semiMode", "Semi-manual cast mode", new[] { "Low hp target", "AOE" }, 0));
+            /*RMenu.Add(new MenuList("semiMode", "Semi-manual cast mode", new[] { "Low hp target", "AOE" }, 0));
             RMenu.Add(new MenuList("Rmode", "R mode", new[] { "Out range MiniGun ", "Out range FishBone ", "Custome range " }, 0));
             RMenu.Add(new MenuSlider("Rcustome", "Custome minimum range", 1000, 0, 1600));
             RMenu.Add(new MenuSlider("RcustomeMax", "Max range", 3000, 0, 10000));
             RMenu.Add(new MenuSlider("Raoe", "R if can hit x target and can kill", 2, 0, 5));
-            RMenu.Add(new MenuSlider("Rover", "Don't R if allies near target in x range ", 500, 1000, 1000));
-            RMenu.Add(new MenuBool("RoverAA", "Don't R if Jinx winding up"));
-            RMenu.Add(new MenuBool("RoverW", "Don't R if can W KS"));
+            RMenu.Add(new MenuSlider("Rover", "Don't R if allies near target in x range ", 500, 1000, 1000));*/
+            RMenu.Add(new MenuBool("ComboRTeam", "Use R|Team Fight"));
+            RMenu.Add(new MenuBool("ComboRSolo", "Use R|Solo Mode"));
+            RMenu.Add(new MenuSlider("rMenuMin", "Use R| Min Range >= x", 1000, 500, 2500));
+            RMenu.Add(new MenuSlider("rMenuMax", "Use R| Man Range <= x", 3000, 1500, 3500));
             MenuRyze.Add(RMenu);
             drawMenu = new Menu("Drawing", "Drawing");
             drawMenu.Add(new MenuBool("DrawQ", "Draw Q").SetValue(true));
@@ -184,15 +188,11 @@ namespace AIO7UP.Champions
         {
             {
 
-                if (E.IsReady())
+                if (EMenu["E Gap"].GetValue<MenuBool>().Enabled && E.IsReady())
                 {
-                    var t = sender;
-                    if (t.IsValidTarget(E.Range) && EMenu["EGCchampion" + t.CharacterName].GetValue<MenuBool>().Enabled)
+                    if (sender.IsValidTarget(E.Range))
                     {
-                        if (EMenu["EmodeGC"].GetValue<MenuList>().Index == 0 && E.IsReady())
-                            E.Cast(t);
-                        else
-                            E.Cast(Player.Position);
+                        E.Cast(args.EndPosition);
                     }
                 }
             }
@@ -224,6 +224,7 @@ namespace AIO7UP.Champions
                         Q.Cast();
                 }
             }
+
         }
         private static void Obj_AI_Base_OnProcessSpellCast(AIBaseClient sender, AIBaseClientProcessSpellCastEventArgs args)
         {
@@ -242,9 +243,37 @@ namespace AIO7UP.Champions
             {
                 E.Cast(sender.Position);
             }
-        }
+            if (EMenu["AutoEWhenEnemyCastAAM"].GetValue<MenuBool>().Enabled && (sender.IsValid() && !sender.IsValidTarget(E.Range)) && sender.IsEnemy && args.Target.IsMe && Player.Spellbook.IsAutoAttack && E.IsReady() && Player.Distance(sender) < 300)
+            {
+                E.Cast(Player.ServerPosition);
+            }
+
+            /*if (Config.Item("Jinx.AutoEWhenEnemyCastAAR").GetValue<bool>() && (unit.IsValid<AIHeroClient>() && !unit.IsValid<Obj_AI_Turret>()) && unit.IsEnemy && args.Target.IsMe && args.SData.IsAutoAttack() && E.IsReady() && Player.Distance(unit) > 300 && Player.Distance(unit) <= E.Range && Player.CountEnemiesInRange(300) == 0)
+            {
+                E.Cast(unit, true, true);
+            }*/
+
+            if (Orbwalker.ActiveMode == OrbwalkerMode.Combo)
+            {
+                if (EMenu["Ecombo"].GetValue<MenuBool>().Enabled &&  
+                        (sender.IsValid() && !sender.IsValidTarget(E.Range) && sender.IsEnemy && args.Target.IsMe && Player.Spellbook.IsAutoAttack && E.IsReady() && Player.Distance(sender) < 300))
+                {
+                    E.Cast(Player.ServerPosition);
+                }
+
+                if (EMenu["Ecombo"].GetValue<MenuBool>().Enabled && (sender.IsValid() && !sender.IsValidTarget(E.Range)) && sender.IsEnemy && args.Target.IsMe && Player.Spellbook.IsAutoAttack && E.IsReady() && Player.Distance(sender) > 300 && Player.Distance(sender) <= E.Range && Player.CountEnemyHeroesInRange(300) == 0)
+                {
+                    E.Cast(sender, true, true);
+                }
+            }
+        
+    }
     private static void Game_OnUpdate(EventArgs args)
         {
+            if (R.Level > 0)
+            {
+                R.Range = RMenu["rMenuMax"].GetValue<MenuSlider>().Value;
+            }
             SetValues();
 
             if (Q.IsReady())
@@ -257,25 +286,17 @@ namespace AIO7UP.Champions
                 Rlogic();
         }
 
+
+
         private static void Rlogic()
         {
-
-            R.Range = RMenu["RcustomeMax"].GetValue<MenuSlider>().Value;
 
             if (RMenu["useR"].GetValue<MenuKeyBind>().Active && R.IsReady())
             {
                 var t = TargetSelector.GetTarget(R.Range, DamageType.Physical);
                 if (t.IsValidTarget())
                 {
-                    if (RMenu["semiMode"].GetValue<MenuList>().Index == 0 && R.IsReady())
-                    {
-                        R.Cast(t);
-                    }
-                    else
-                    {
-                        R.CastIfWillHit(t, 2);
-                        R.Cast(t, true, true);
-                    }
+                    R.Cast(t);
                 }
             }
 
@@ -284,10 +305,8 @@ namespace AIO7UP.Champions
                 bool cast = false;
 
 
-                if (RMenu["RoverAA"].GetValue<MenuBool>().Enabled && (!Orbwalker.CanAttack() || Player.Spellbook.IsAutoAttack) && R.IsReady())
-                    return;
 
-                foreach (var target in Enemies.Where(target => target.IsValidTarget(R.Range) ))
+                foreach (var target in Enemies.Where(target => target.IsValidTarget(R.Range)))
                 {
 
                     float predictedHealth = target.Health + target.HPRegenRate * 2;
@@ -323,18 +342,20 @@ namespace AIO7UP.Champions
                             if (length < (R.Width + 150 + enemy.BoundingRadius / 2) && Player.Distance(predictedPosition) < Player.Distance(target.Position))
                                 cast = false;
                         }
-
-                        if (cast)
-                        {
-                            if (RMenu["RoverW"].GetValue<MenuBool>().Enabled && target.IsValidTarget(W.Range) && W.GetDamage(target) > target.Health && W.Instance.Cooldown - (W.Instance.CooldownExpires - Game.Time) < 1.1)
-                                return;
-
-                            if (target.CountEnemyHeroesInRange(400) > RMenu["Raoe"].GetValue<MenuSlider>().Value && R.IsReady())
-                                R.Cast(target);
-
-                            if (RValidRange(target) && target.CountAllyHeroesInRange(RMenu["Rover"].GetValue<MenuSlider>().Value) == 0 && R.IsReady())
-                                R.Cast(target);
-                        }
+                    }
+                }
+            }
+            if(Combo && R.IsReady())
+            {
+                foreach (var target in Enemies.Where(x => x.IsValidTarget(1200)))
+                {
+                    if (RMenu["ComboRTeam"].GetValue<MenuBool>().Enabled && target.IsValidTarget(600) && target.CountEnemyHeroesInRange(600) >= 2 && target.CountAllyHeroesInRange(200) <= 3 && target.HealthPercent < 50)
+                    {
+                        R.Cast(target);
+                    }
+                    if (RMenu["ComboRSolo"].GetValue<MenuBool>().Enabled && target.CountEnemyHeroesInRange(1500) <= 2 && target.DistanceToPlayer() > Q.Range && target.DistanceToPlayer() < bigGunRange && target.Health > target.GetAutoAttackDamage(target) && target.Health < R.GetDamage(target) + target.GetAutoAttackDamage(target) * 3)
+                    {
+                        R.Cast(target);
                     }
                 }
             }
@@ -381,52 +402,11 @@ namespace AIO7UP.Champions
                     E.Cast(t);
                 }
             }
-                    if (Player.ManaPercent < EMenu["EmanaCombo"].GetValue<MenuSlider>().Value && E.IsReady())
-                return;
 
-            if (blitz != null)
-            {
-                foreach (var enemy in Enemies.Where(enemy => enemy.IsValidTarget(2000) && enemy.HasBuff("RocketGrab")))
-                {
-                    E.Cast(blitz.Position.Extend(enemy.Position, 30));
-                    return;
-                }
-            }
-
-            foreach (var enemy in Enemies.Where(enemy => enemy.IsValidTarget(E.Range) && E.IsReady()))
-            {
-
-                E.CastIfWillHit(enemy, EMenu["Eaoe"].GetValue<MenuSlider>().Value);
-
-                if (EMenu["Ecc"].GetValue<MenuBool>().Enabled && E.IsReady() && Game.Time - grabTime > 1)
-                {
-                    foreach (var enemy1 in GameObjects.EnemyHeroes.Where(enemy1 => enemy1.IsValidTarget(E.Range + 50) && !Orbwalker.CanMove()))
-                    {
-                        E.Cast(enemy1);
-                        return;
-                    }
-                }
-
-                if (enemy.MoveSpeed < 250 && EMenu["Eslow"].GetValue<MenuBool>().Enabled && E.IsReady())
-                    E.Cast(enemy);
-                if (EMenu["Edash"].GetValue<MenuBool>().Enabled && E.IsReady())
-                    E.CastIfHitchanceEquals(enemy, HitChance.Dash);
-            }
-
-
-            if (EMenu["Etel"].GetValue<MenuBool>().Enabled && E.IsReady())
-            {
-                foreach (var Object in ObjectManager.Get<AIBaseClient>().Where(Obj => Obj.IsEnemy && (Obj.HasBuff("teleport_target") || Obj.HasBuff("Pantheon_GrandSkyfall_Jump"))))
-                {
-                    E.Cast(Object.Position);
-                }
-
-            }
-
-            if (Combo && Player.IsMoving && EMenu["Ecombo"].GetValue<MenuBool>().Enabled && E.IsReady())
+            if (Combo && EMenu["Ecombo"].GetValue<MenuBool>().Enabled && E.IsReady())
             {
                 var t = TargetSelector.GetTarget(E.Range, DamageType.Magical);
-                if (t.IsValidTarget(E.Range) && E.GetPrediction(t).CastPosition.Distance(t.Position) > 200)
+                /*if (t.IsValidTarget(E.Range) && E.GetPrediction(t).CastPosition.Distance(t.Position) > 200)
                 {
                     if (Player.Position.Distance(t.Position) > Player.Position.Distance(t.Position))
                     {
@@ -438,6 +418,42 @@ namespace AIO7UP.Champions
                         if (t.Position.Distance(Player.Position) > t.Position.Distance(Player.Position))
                             E.Cast(t);
                     }
+                }*/
+
+
+                if (t.IsValidTarget(E.Range) && E.GetPrediction(t).CastPosition.Distance(t.Position) > 200)
+                {
+                    if (!t.CanMove)
+                    {
+                        E.Cast(t);
+                    }
+                    else
+                    {
+                        if (E.GetPrediction(t).Hitchance >= HitChance.VeryHigh)
+                        {
+                            E.Cast(t);
+                        }
+                    }
+                }
+            }
+            if (EMenu["Ecc"].GetValue<MenuBool>().Enabled && E.IsReady())
+            {
+                foreach (var target in Enemies.Where(x => x.IsValidTarget(E.Range) && !x.CanMove))
+                {
+                    E.Cast(target);
+                }
+            }
+            if (EMenu["Etel"].GetValue<MenuBool>().Enabled && E.IsReady())
+            {
+                foreach (
+                    var obj in
+                    ObjectManager.Get<AIBaseClient>()
+                        .Where(
+                            x =>
+                                x.IsEnemy && x.DistanceToPlayer() < E.Range &&
+                                (x.HasBuff("teleport_target") || x.HasBuff("Pantheon_GrandSkyfall_Jump"))))
+                {
+                    E.Cast(obj.Position);
                 }
             }
         }
@@ -574,6 +590,7 @@ namespace AIO7UP.Champions
                 }
             }
         }
+
         private static int CountMinionsInRange(float range, Vector3 pos)
         {
             var minions = GameObjects.GetMinions(pos, range);
@@ -642,10 +659,10 @@ namespace AIO7UP.Champions
             else
                 WMenu["Wcustome"].GetValue<MenuSlider>().Value = 600;
 
-            if (RMenu["Rmode"].GetValue<MenuList>().Index == 2)
+            /*if (RMenu["Rmode"].GetValue<MenuList>().Index == 2)
                 RMenu["Rcustome"].GetValue<MenuSlider>().Value = 1600;
             else
-                RMenu["Rcustome"].GetValue<MenuSlider>().Value = 1000;
+                RMenu["Rcustome"].GetValue<MenuSlider>().Value = 1000;*/
 
 
             if (Player.HasBuff("JinxQ"))

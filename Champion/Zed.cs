@@ -568,14 +568,14 @@ namespace AIO7UP.Champions
             else
             {
                 if (_config["Drawings"].GetValue<MenuBool>("DrawQ").Enabled)
-                    Drawing.DrawCircle(ObjectManager.Player.Position, _q.Range, Color.White);
+                    Drawing.DrawCircleIndicator(ObjectManager.Player.Position, _q.Range, Color.White);
                 if (_config["Drawings"].GetValue<MenuBool>("DrawE").Enabled)
-                    Drawing.DrawCircle(ObjectManager.Player.Position, _e.Range, Color.White);
+                    Drawing.DrawCircleIndicator(ObjectManager.Player.Position, _e.Range, Color.White);
                 if (_config["Drawings"].GetValue<MenuBool>("DrawQW").Enabled &&
                     _config["Harass"].GetValue<MenuKeyBind>("longhar").Active)
-                    Drawing.DrawCircle(ObjectManager.Player.Position, 1400, Color.White);
+                    Drawing.DrawCircleIndicator(ObjectManager.Player.Position, 1400, Color.White);
                 if (_config["Drawings"].GetValue<MenuBool>("DrawR").Enabled)
-                    Drawing.DrawCircle(ObjectManager.Player.Position, _r.Range, Color.White);
+                    Drawing.DrawCircleIndicator(ObjectManager.Player.Position, _r.Range, Color.White);
             }
         }
 
