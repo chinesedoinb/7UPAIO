@@ -274,6 +274,7 @@ namespace AIO7UP.Champions
             {
                 R.Range = RMenu["rMenuMax"].GetValue<MenuSlider>().Value;
             }
+
             SetValues();
 
             if (Q.IsReady())
@@ -429,10 +430,19 @@ namespace AIO7UP.Champions
                     }
                     else
                     {
-                        if (E.GetPrediction(t).Hitchance >= HitChance.High)
+                        if (E.GetPrediction(t).Hitchance >= HitChance.VeryHigh && E.GetPrediction(t).CastPosition.Distance(t.Position) > 200)
                         {
-                            E.Cast(t);
+                            //if (Player.Position.Distance(t.ServerPosition) > Player.Position.Distance(t.Position))
+                            {
+                                E.Cast(t);
+                            }
+                            /*else
+                                if (Player.Position.Distance(t.ServerPosition) < Player.Position.Distance(t.Position))
+                            {
+                                E.Cast(t);
+                            }*/
                         }
+                        
                     }
                 }
             }
