@@ -300,51 +300,14 @@ namespace AIO7UP.Champions
                     R.Cast(t);
                 }
             }
+            var t1 = TargetSelector.GetTarget(R.Range, DamageType.Physical);
 
-            if (RMenu["Rks"].GetValue<MenuBool>().Enabled && R.IsReady())
+            if (RMenu["Rks"].GetValue<MenuBool>().Enabled && GetKsDamage(t1, R) > t1.Health && R.IsReady())
             {
-                bool cast = false;
-
-
-
-                foreach (var target in Enemies.Where(target => target.IsValidTarget(R.Range)))
-                {
-
-                    float predictedHealth = target.Health + target.HPRegenRate * 2;
-
-                    var Rdmg = R.GetDamage(target, 1);
-                    if (Player.Distance(target.Position) < 1500)
+                if (!R.IsInRange(R.GetTarget(), W.Range + 100f))
                     {
-
-                        Rdmg = Rdmg * (Player.Distance(target.Position) / 1500);
-
+                        R.Cast(t1);
                     }
-
-                    if (Rdmg > predictedHealth)
-                    {
-                        cast = true;
-                        PredictionOutput output = R.GetPrediction(target);
-                        Vector2 direction = output.CastPosition.ToVector2() - Player.Position.ToVector2();
-                        direction.Normalize();
-
-                        foreach (var enemy in Enemies.Where(enemy => enemy.IsValidTarget()))
-                        {
-                            if (enemy.NetworkId == target.NetworkId || !cast)
-                                continue;
-                            PredictionOutput prediction = R.GetPrediction(enemy);
-                            Vector3 predictedPosition = prediction.CastPosition;
-                            Vector3 v = output.CastPosition - Player.Position;
-                            Vector3 w = predictedPosition - Player.Position;
-                            double c1 = Vector3.Dot(w, v);
-                            double c2 = Vector3.Dot(v, v);
-                            double b = c1 / c2;
-                            Vector3 pb = Player.Position + ((float)b * v);
-                            float length = Vector3.Distance(predictedPosition, pb);
-                            if (length < (R.Width + 150 + enemy.BoundingRadius / 2) && Player.Distance(predictedPosition) < Player.Distance(target.Position))
-                                cast = false;
-                        }
-                    }
-                }
             }
             if(Combo && R.IsReady())
             {
