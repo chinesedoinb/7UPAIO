@@ -295,14 +295,14 @@ namespace AIO7UP.Champions
             if (RMenu["useR"].GetValue<MenuKeyBind>().Active && R.IsReady())
             {
                 var t = TargetSelector.GetTarget(R.Range, DamageType.Physical);
-                if (t.IsValidTarget() && E.GetPrediction(t).Hitchance >= HitChance.High)
+                if (t.IsValidTarget() && R.GetPrediction(t).Hitchance >= HitChance.High)
                 {
                     R.Cast(t);
                 }
             }
             var t1 = TargetSelector.GetTarget(R.Range, DamageType.Physical);
 
-            if (RMenu["Rks"].GetValue<MenuBool>().Enabled && GetKsDamage(t1, R) > t1.Health && R.IsReady())
+            if (RMenu["Rks"].GetValue<MenuBool>().Enabled && GetKsDamage(t1, R) > t1.Health && R.IsReady() && R.GetPrediction(t1).Hitchance >= HitChance.High)
             {
                 if (!R.IsInRange(R.GetTarget(), W.Range + 100f))
                     {
@@ -479,7 +479,7 @@ namespace AIO7UP.Champions
                     W.Cast(t);
                 }
 
-                if (Combo && W.IsReady() && WMenu["Wcombo"].GetValue<MenuBool>().Enabled && Player.ManaPercent > WMenu["WmanaCombo"].GetValue<MenuSlider>().Value)
+                if (Combo && W.IsReady() && WMenu["Wcombo"].GetValue<MenuBool>().Enabled && Player.ManaPercent > WMenu["WmanaCombo"].GetValue<MenuSlider>().Value && W.GetPrediction(t).Hitchance >= HitChance.High)
                 {
                     W.Cast(t);
                 }
