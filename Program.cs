@@ -40,6 +40,9 @@ namespace AIO7UP
                     case "Jax":
                         Jax.OnGameLoad();
                         break;
+                    case "Jayce":
+                        Jayce.OnGameLoad();
+                        break;
                     case "Jinx":
                         Jinx.OnGameLoad();
                         break;
