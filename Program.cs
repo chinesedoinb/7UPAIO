@@ -58,6 +58,12 @@ namespace AIO7UP
                     case "Leblanc":
                         Leblanc.OnGameLoad();
                         break;
+                    case "Nami":
+                        Nami.OnGameLoad();
+                        break;
+                    case "Nautilus":
+                        Nautilus.OnGameLoad();
+                        break;
                     case "Olaf":
                         Olaf.OnGameLoad();
                         break;

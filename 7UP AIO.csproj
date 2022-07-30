@@ -90,6 +90,8 @@
     <Compile Include="Champion\Jax.cs" />
     <Compile Include="Champion\Karthus.cs" />
     <Compile Include="Champion\Kogmaw.cs" />
+    <Compile Include="Champion\Nami.cs" />
+    <Compile Include="Champion\Nautilus.cs" />
     <Compile Include="Champion\Olaf.cs" />
     <Compile Include="Champion\OneKeyToFish.cs" />
     <Compile Include="Champion\Oriana.cs" />
