@@ -50,11 +50,19 @@ namespace AIO7UP.Champions
                 ESettings.Add(new MenuBool("Eset" + ally.CharacterName.ToLower(), "E on" + ally.CharacterName));
             MenuRyze.Add(ESettings);
             HealMenu = new Menu("Heel Settings", "Heel Settings");
-            HealMenu.Add(new MenuKeyBind("Heal Active", "Heal on me Active", Keys.S, KeyBindType.Toggle));
+            /*HealMenu.Add(new MenuKeyBind("Heal Active", "Heal on me Active", Keys.S, KeyBindType.Toggle));
             HealMenu.Add(new MenuSlider("Heal Player", "Heal % HP", 25, 1, 100));
             HealMenu.Add(new MenuBool("Heal Ally", "Heal on Ally"));
             HealMenu.Add(new MenuSlider("Heal HP Ally", "Heal % HP on Ally", 25, 1, 100));
-            HealMenu.Add(new MenuSlider("Heal mana", "Heal % Mana", 35));
+            HealMenu.Add(new MenuSlider("Heal mana", "Heal % Mana", 35));*/
+            HealMenu.Add(new MenuBool("enable", "Use Auto W"));
+            foreach (var target in GameObjects.AllyHeroes)
+            {
+
+                HealMenu.Add(new MenuSlider("priorty" + target.CharacterName.ToLower() + "priority", target.CharacterName + " Priority: ", 1, 0, 5));
+                HealMenu.Add(new MenuSlider("hp" + target.CharacterName.ToLower() + "hp", "^- Health Percent: ", 50, 0, 100));
+
+            }
             MenuRyze.Add(HealMenu);
             Misc = new Menu("Misc Settings", "Misc");
             Misc.Add(new MenuBool("Interupt.Q", "Use Q"));
@@ -190,14 +198,37 @@ namespace AIO7UP.Champions
                     return;
             }
             KillSteal();
-            PlayerHealing();
-            AllyHealing();
+            //PlayerHealing();
+            //AllyHealing();
             AutoQ();
             SemiR();
+            AutoW();
         }
 
 
+        public static void AutoW()
+        {
+            if (HealMenu["enable"].GetValue<MenuBool>().Enabled)
+            {
+                foreach (var ally in GameObjects.AllyHeroes.Where(
+                        x => x.Distance(Player) <= W.Range && x.IsAlly && !x.IsRecalling() &&
+                             HealMenu["priority" + x.CharacterName.ToLower() + "priority"].GetValue<MenuSlider>().Value != 0 &&
+                             x.HealthPercent <= HealMenu["hp" + x.CharacterName.ToLower() + "hp"].GetValue<MenuSlider>().Value)
+                    .OrderByDescending(x => HealMenu["priority" + x.CharacterName.ToLower() + "priority"].GetValue<MenuSlider>().Value)
+                    .Where(x => x.Distance(Player) < W.Range).OrderBy(x => x.Health))
+                {
 
+
+                    if (ally != null && !ally.IsDead)
+                    {
+                        W.Cast(ally);
+                    }
+                }
+
+            }
+
+        }
+    
         public static void PlayerHealing()
         {
             if (Player.IsRecalling() || Player.InFountain()
