@@ -83,7 +83,7 @@ namespace AIO7UP.Champions
             QSetting.Add(new MenuBool("QMelee", "Use Q|Anti Melee"));
             MenuRyze.Add(QSetting);
             ESetting = new Menu("ESetting", " E Setting");
-            ESetting.Add(new MenuList("EMode", "Use E Mode:", new[] { "Default", "VHR", "Marksman", "SharpShooter", "OKTW" })).Permashow();
+            ESetting.Add(new MenuList("EMode", "Use E Mode:", new[] { "Default", "VHR", "Marksman", "SharpShooter", "OKTW" })).AddPermashow();
             ESetting.Add(new MenuSlider("ComboEPush", "Use E|Push Tolerance", 0, -50, 50));
             ESetting.Add(new MenuBool("AutoE", "Auto E?"));
             foreach (var target in GameObjects.EnemyHeroes)

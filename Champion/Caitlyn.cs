@@ -57,11 +57,11 @@ namespace AIO7UP.Champions
             ComboMenu = new Menu("Combo Settings", "Combo");
             ComboMenu.Add(new MenuBool("UseQC", "Combo Q"));
             ComboMenu.Add(new MenuBool("Combo.Q.Use.Urf", "Q: Urf Mode", false));
-            ComboMenu.Add(new MenuKeyBind("UseQMC", "Semi Q Key", Keys.G, KeyBindType.Press)).Permashow();
+            ComboMenu.Add(new MenuKeyBind("UseQMC", "Semi Q Key", Keys.G, KeyBindType.Press)).AddPermashow();
             ComboMenu.Add(new MenuBool("UseWC", "Combo W"));
             ComboMenu.Add(new MenuBool("UseEC", "Combo E"));
             ComboMenu.Add(new MenuBool("UseRC", "Combo R"));
-            ComboMenu.Add(new MenuKeyBind("UseRMC", "Semi R Key", Keys.T, KeyBindType.Press)).Permashow();
+            ComboMenu.Add(new MenuKeyBind("UseRMC", "Semi R Key", Keys.T, KeyBindType.Press)).AddPermashow();
             MenuRyze.Add(ComboMenu);
             HarassMenu = new Menu("Harass Settings", "Harass");
             HarassMenu.Add(new MenuBool("UseQH", "Use Q"));
@@ -79,9 +79,9 @@ namespace AIO7UP.Champions
             Misc = new Menu("Misc Settings", "Misc");
             Misc.Add(new MenuBool("Misc.W.Interrupt", "W Interrupt"));
             Misc.Add(new MenuBool("Misc.AntiGapCloser", "E Anti Gapcloser"));
-            Misc.Add(new MenuKeyBind("UseEQC", "Use E-Q Combo", Keys.S, KeyBindType.Press)).Permashow();
-            Misc.Add(new MenuList("AutoQI", "Auto Q (Stun/Snare/Taunt/Slow)", new[] { "Off", "On: Everytime", "On: Combo Mode" }, 2)).Permashow();
-            Misc.Add(new MenuList("AutoWI", "Auto W (Stun/Snare/Taunt)", new[] { "Off", "On: Everytime", "On: Combo Mode" }, 2)).Permashow();
+            Misc.Add(new MenuKeyBind("UseEQC", "Use E-Q Combo", Keys.S, KeyBindType.Press)).AddPermashow();
+            Misc.Add(new MenuList("AutoQI", "Auto Q (Stun/Snare/Taunt/Slow)", new[] { "Off", "On: Everytime", "On: Combo Mode" }, 2)).AddPermashow();
+            Misc.Add(new MenuList("AutoWI", "Auto W (Stun/Snare/Taunt)", new[] { "Off", "On: Everytime", "On: Combo Mode" }, 2)).AddPermashow();
             if (blitz != null)
             {
                 Misc.Add(new MenuBool("AutoWB", "Auto W (Blitz)"));
@@ -96,7 +96,7 @@ namespace AIO7UP.Champions
             draw.Add(new MenuBool("drawE", "Draw E"));
             MenuRyze.Add(draw);
             MenuRyze.Attach();
-            Drawing.OnDraw += Drawing_OnDraw;
+            //Drawing.OnDraw += Drawing_OnDraw;
             Game.OnUpdate += Game_OnUpdate;
             //Orbwalker.OnAfterAttack += Orbwalker_OnAfterAttack;
             AntiGapcloser.OnGapcloser += Gapcloser_OnGapcloser;
@@ -149,7 +149,7 @@ namespace AIO7UP.Champions
                 }
             };
         }
-        private static void Drawing_OnDraw(EventArgs args)
+        /*private static void Drawing_OnDraw(EventArgs args)
         {
             if (draw["drawQ"].GetValue<MenuBool>().Enabled && Q.IsReady())
             {
@@ -163,7 +163,7 @@ namespace AIO7UP.Champions
             {
                 Render.Circle.DrawCircle(ObjectManager.Player.Position, E.Range, Color.Orange, 1);
             }
-        }
+        }*/
         public static void Gapcloser_OnGapcloser(AIHeroClient sender, AntiGapcloser.GapcloserArgs args)
         {
             if (Misc["Misc.AntiGapCloser"].GetValue<MenuBool>().Enabled && E.IsReady())

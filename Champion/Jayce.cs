@@ -103,7 +103,7 @@ namespace AIO7UP.Champions
                 {
                     if (sender.IsValidTarget(1000))
                     {
-                        Render.Circle.DrawCircle(sender.Position, sender.BoundingRadius, Color.Gold, 5);
+                        //Render.Circle.DrawCircle(sender.Position, sender.BoundingRadius, Color.Gold, 5);
                         var targetpos = Drawing.WorldToScreen(sender.Position);
                         Drawing.DrawText(targetpos[0] - 40, targetpos[1] + 20, Color.Gold, "Interrupt");
                     }
@@ -122,7 +122,7 @@ namespace AIO7UP.Champions
                 {
                     if (sender.IsValidTarget(1000))
                     {
-                        Render.Circle.DrawCircle(sender.Position, sender.BoundingRadius, Color.Gold, 5);
+                        //Render.Circle.DrawCircle(sender.Position, sender.BoundingRadius, Color.Gold, 5);
                         var targetpos = Drawing.WorldToScreen(sender.Position);
                         Drawing.DrawText(targetpos[0] - 40, targetpos[1] + 20, Color.Gold, "Gapcloser");
                     }

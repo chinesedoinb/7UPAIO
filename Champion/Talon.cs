@@ -93,13 +93,13 @@ namespace AIO7UP.Champions
             Items.Add(new MenuSlider("ihpp", "Enemy HP Use BOTRK <=", 50));
             MenuRyze.Add(Items);
             MenuRyze.Attach();
-            Drawing.OnDraw += Drawing_OnDraw;
+            //Drawing.OnDraw += Drawing_OnDraw;
             Game.OnUpdate += Game_OnUpdate;
             Orbwalker.OnAfterAttack += Orbwalker_OnAfterAttack;
             AntiGapcloser.OnGapcloser += Gapcloser_OnGapcloser;
         }
 
-        private static void Drawing_OnDraw(EventArgs args)
+        /*private static void Drawing_OnDraw(EventArgs args)
         {
             if (Misc["DrawW"].GetValue<MenuBool>().Enabled && W.IsReady())
             {
@@ -109,7 +109,7 @@ namespace AIO7UP.Champions
             {
                 Render.Circle.DrawCircle(ObjectManager.Player.Position, Q.Range, Color.Orange, 1);
             }
-        }
+        }*/
 
         private static void Game_OnUpdate(EventArgs args)
         {

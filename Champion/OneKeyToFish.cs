@@ -87,14 +87,14 @@ namespace AIO7UP.Champions
 
             RRectangle = new Geometry.Polygon();
 
-            Drawing.OnDraw += Drawing_OnDraw;
+            //Drawing.OnDraw += Drawing_OnDraw;
             Game.OnUpdate += Game_OnUpdate;
             AIBaseClient.OnProcessSpellCast += ObjAiBaseOnOnProcessSpellCast;
             //Orbwalker.OnAfterAttack += Orbwalker_OnAfterAttack;
             //AntiGapcloser.OnGapcloser += Gapcloser_OnGapcloser;
         }
 
-        private static void Drawing_OnDraw(EventArgs args)
+        /*private static void Drawing_OnDraw(EventArgs args)
         {
             var drawQ = draw["DrawQ"].GetValue<MenuBool>().Enabled;
             var drawE = draw["DrawE"].GetValue<MenuBool>().Enabled;
@@ -120,7 +120,7 @@ namespace AIO7UP.Champions
             {
                 RRectangle.Draw(Color.CornflowerBlue, 3);
             }
-        }
+        }*/
         private static float DamageToUnit(AIHeroClient target)
         {
             var damage = 0d;

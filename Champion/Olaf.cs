@@ -323,7 +323,7 @@ namespace AIO7UP.Champions
             new Helper();
             
             GameEvent.OnGameTick += OnGameUpdate;
-            Drawing.OnDraw += OnDraw;
+            //Drawing.OnDraw += OnDraw;
             Orbwalker.OnBeforeAttack += OnBeforeAttack;
             GameObject.OnCreate += GameObject_OnCreate;
             GameObject.OnDelete += GameObject_OnDelete;
@@ -443,7 +443,7 @@ namespace AIO7UP.Champions
             }
         }
 
-        private static void OnDraw(EventArgs args)
+        /*private static void OnDraw(EventArgs args)
         {
             CountAa();
 
@@ -505,7 +505,7 @@ namespace AIO7UP.Champions
             {
                 Render.Circle.DrawCircle(Player.Position, Q2.Range, System.Drawing.Color.Gray, 1);
             }
-        }
+        }*/
 
         private static void OnGameUpdate(EventArgs args)
         {

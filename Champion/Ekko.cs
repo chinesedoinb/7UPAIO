@@ -108,7 +108,7 @@ namespace AIO7UP.Champions
             ObjectManager.Player.SetSkin(Misc["skin.Id"].GetValue<MenuSlider>().Value);
             Misc["skin.Id"].GetValue<MenuSlider>().DisplayName = ObjectManager.Player.CharacterName;
             Game.OnUpdate += Game_OnUpdate;
-            Drawing.OnDraw += Drawing_OnDraw;
+            //Drawing.OnDraw += Drawing_OnDraw;
             AntiGapcloser.OnGapcloser += Gapcloser_OnGapCloser;
             Interrupter.OnInterrupterSpell += Interupt;
             AIBaseClient.OnProcessSpellCast += AIHeroClient_OnProcessSpellCast;
@@ -153,7 +153,7 @@ namespace AIO7UP.Champions
 
         // Drawings
 
-        private static void Drawing_OnDraw(EventArgs args)
+        /*private static void Drawing_OnDraw(EventArgs args)
         {
             if (_Player.IsDead) return;
 
@@ -191,7 +191,7 @@ namespace AIO7UP.Champions
                     DrawFont(Thm, "Use E Under Turret : Enable", (float)(ft[0] - 70), (float)(ft[1] + 50), SharpDX.Color.Red);
                 }
             }
-        }
+        }*/
 
         // Flee Mode
 

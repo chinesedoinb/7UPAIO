@@ -163,7 +163,7 @@ namespace AIO7UP.Champions
             ((Menu) _config["Drawings"]).Add(new MenuSlider("CircleQuality", "Circles Quality", 100, 10));
             ((Menu) _config["Drawings"]).Add(new MenuSlider("CircleThickness", "Circles Thickness", 1, 1, 10));
             _config.Attach();
-            Drawing.OnDraw += OnDraw;
+            //Drawing.OnDraw += OnDraw;
             GameEvent.OnGameTick += OnGameUpdate;
             AIBaseClient.OnDoCast += OnDoCast;
         }
@@ -525,7 +525,7 @@ namespace AIO7UP.Champions
             }
         }
 
-        private static void OnDraw(EventArgs args)
+        /*private static void OnDraw(EventArgs args)
         {
             if (RShadow != null) Render.Circle.DrawCircle(RShadow.Position, RShadow.BoundingRadius * 2, Color.Blue);
             if (_config["Drawings"].GetValue<MenuBool>("shadowd").Enabled)
@@ -577,7 +577,7 @@ namespace AIO7UP.Champions
                 if (_config["Drawings"].GetValue<MenuBool>("DrawR").Enabled)
                     Drawing.DrawCircleIndicator(ObjectManager.Player.Position, _r.Range, Color.White);
             }
-        }
+        }*/
 
         internal enum UltCastStage
         {

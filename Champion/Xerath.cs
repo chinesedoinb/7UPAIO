@@ -98,7 +98,7 @@ namespace AIO7UP.Champions
             draw.Add(new MenuBool("RMouse", "Draw R Mouse"));
             MenuRyze.Add(draw);
             MenuRyze.Attach();
-            Drawing.OnDraw += Drawing_OnDraw;
+            //Drawing.OnDraw += Drawing_OnDraw;
             Game.OnUpdate += Game_OnUpdate;
             //Orbwalker.OnBeforeAttack += Orbwalker_OnBeforeAttack;
             AntiGapcloser.OnGapcloser += Gapcloser_OnGapcloser;
@@ -109,7 +109,7 @@ namespace AIO7UP.Champions
 
         private static HitChance RHitchance => Misc["rslowcast"].GetValue<MenuBool>().Enabled ? HitChance.VeryHigh : HitChance.High;
 
-        private static void Drawing_OnDraw(EventArgs args)
+        /*private static void Drawing_OnDraw(EventArgs args)
         {
             if (draw["drawQ"].GetValue<MenuBool>().Enabled && Q.IsReady())
             {
@@ -131,7 +131,7 @@ namespace AIO7UP.Champions
             {
                 Render.Circle.DrawCircle(Game.CursorPos, Ulti["MouseZone"].GetValue<MenuSlider>().Value, Color.White, 1);
             }
-        }
+        }*/
         private static void OnInterrupterSpell(AIHeroClient sender, Interrupter.InterruptSpellArgs args)
         {
             if (ObjectManager.Player.IsDead || ObjectManager.Player.IsRecalling())

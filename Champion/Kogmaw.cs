@@ -92,7 +92,7 @@ namespace AIO7UP.Champions
             Config.Attach();
 
             GameEvent.OnGameTick += OnGameUpdate;
-            Drawing.OnDraw += OnDraw;
+            //Drawing.OnDraw += OnDraw;
             AntiGapcloser.OnGapcloser += OnGapcloser;
             Orbwalker.OnBeforeAttack += OnBeforeAttack;
             Orbwalker.OnAfterAttack += OnAfterAttack;
@@ -355,7 +355,7 @@ namespace AIO7UP.Champions
             return 0;
         }
         
-        private static void OnDraw(EventArgs args)
+        /*private static void OnDraw(EventArgs args)
         {
             if (Config["Draw"].GetValue<MenuBool>("ComboInfo").Enabled)
             {
@@ -414,7 +414,7 @@ namespace AIO7UP.Champions
                 else
                     Render.Circle.DrawCircle(ObjectManager.Player.Position, R.Range, System.Drawing.Color.Gray, 1);
             }
-        }
+        }*/
         
         private static void drawText(string msg, AIHeroClient Hero, System.Drawing.Color color)
         {

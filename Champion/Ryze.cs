@@ -38,8 +38,8 @@ namespace AIO7UP.Champions
             Ignite = new Spell(ObjectManager.Player.GetSpellSlot("summonerdot"), 600);
             var MenuRyze = new Menu("Ryze", "[7UP]Ryze", true);
             ComboMenu = new Menu("Combo Settings", "Combo");
-            ComboMenu.Add(new MenuBool("UseQOutRangeEW", "Use Q out range EW", true)).Permashow();
-            ComboMenu.Add(new MenuBool("AACombo", "AA in Combo (On/Off: T)", false)).Permashow();
+            ComboMenu.Add(new MenuBool("UseQOutRangeEW", "Use Q out range EW", true)).AddPermashow();
+            ComboMenu.Add(new MenuBool("AACombo", "AA in Combo (On/Off: T)", false)).AddPermashow();
             ComboMenu.Add(new MenuBool("UseQCombo", "Use Q", true));
             ComboMenu.Add(new MenuBool("UseWCombo", "Use W"));
             ComboMenu.Add(new MenuBool("UseECombo", "Use E"));
@@ -59,14 +59,14 @@ namespace AIO7UP.Champions
             Drawings.Add(new MenuBool("ERange", "E range"));
             MenuRyze.Add(Drawings);
             MenuRyze.Attach();
-            Drawing.OnDraw += Drawing_OnDraw;
+            //Drawing.OnDraw += Drawing_OnDraw;
             Game.OnUpdate += Game_OnUpdate;
             Game.OnWndProc += Game_OnWndProc;
             Orbwalker.OnBeforeAttack += Orbwalker_OnBeforeAttack;
             AntiGapcloser.OnGapcloser += Gapcloser_OnGapcloser;
         }
 
-        private static void Drawing_OnDraw(EventArgs args)
+        /*private static void Drawing_OnDraw(EventArgs args)
         {
             if (Drawings["QRange"].GetValue<MenuBool>().Enabled && Q.IsReady())
             {
@@ -80,7 +80,7 @@ namespace AIO7UP.Champions
             {
                 Render.Circle.DrawCircle(ObjectManager.Player.Position, E.Range, Color.Orange, 1);
             }
-        }
+        }*/
         private static void Orbwalker_OnBeforeAttack(object e, BeforeAttackEventArgs args)
         {
             if (ComboMenu["AACombo"].GetValue<MenuBool>().Enabled)

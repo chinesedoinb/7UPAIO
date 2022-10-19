@@ -147,7 +147,7 @@ namespace AIO7UP.Champions
             combo.Add(new MenuBool("UseRCombo", "Use R"));
             combo.Add(new MenuSlider("UseRNCombo", "Use R on at least", 3, 1, 5));
             combo.Add(new MenuSlider("UseRImportant", "-> Or if hero priority >=", 5, 1, 5)); // 5 for e.g adc's
-            combo.Add(new MenuKeyBind("ComboActive", "Combo!", Keys.Space, KeyBindType.Press)).Permashow();
+            combo.Add(new MenuKeyBind("ComboActive", "Combo!", Keys.Space, KeyBindType.Press)).AddPermashow();
             Config.Add(combo);
             
             Menu Misc = new Menu("Misc", "Misc");
@@ -179,26 +179,26 @@ namespace AIO7UP.Champions
             Harass.Add(new MenuBool("UseQHarass", "Use Q"));
             Harass.Add(new MenuBool("UseWHarass", "Use W", false));
             Harass.Add(new MenuSlider("HarassManaCheck", "Don't harass if mana < %", 0, 0, 100));
-            Harass.Add(new MenuKeyBind("HarassActive", "Harass!", Keys.C, KeyBindType.Press)).Permashow();
-            Harass.Add(new MenuKeyBind("HarassActiveT", "Harass (toggle)!", Keys.Y, KeyBindType.Toggle)).Permashow();
+            Harass.Add(new MenuKeyBind("HarassActive", "Harass!", Keys.C, KeyBindType.Press)).AddPermashow();
+            Harass.Add(new MenuKeyBind("HarassActiveT", "Harass (toggle)!", Keys.Y, KeyBindType.Toggle)).AddPermashow();
             Config.Add(Harass);
             
             var Farm = new Menu("Farm", "Farm");
-            Farm.Add(new MenuBool("EnabledFarm", "Enable! (On/Off: Mouse Scroll)")).Permashow();
+            Farm.Add(new MenuBool("EnabledFarm", "Enable! (On/Off: Mouse Scroll)")).AddPermashow();
             Farm.Add(new MenuList("UseQFarm", "Use Q", new[] { "Freeze", "LaneClear", "Both", "No" }, 2));
             Farm.Add(new MenuList("UseWFarm", "Use W", new[] { "Freeze", "LaneClear", "Both", "No" }, 1));
             Farm.Add(new MenuList("UseEFarm", "Use E", new[] { "Freeze", "LaneClear", "Both", "No" }, 1));
             Farm.Add(new MenuSlider("LaneClearManaCheck", "Don't LaneClear if mana < %", 0, 0, 100));
 
-            Farm.Add(new MenuKeyBind("FreezeActive", "Freeze!", Keys.X, KeyBindType.Press)).Permashow();
-            Farm.Add(new MenuKeyBind("LaneClearActive", "LaneClear!", Keys.S, KeyBindType.Press)).Permashow();
+            Farm.Add(new MenuKeyBind("FreezeActive", "Freeze!", Keys.X, KeyBindType.Press)).AddPermashow();
+            Farm.Add(new MenuKeyBind("LaneClearActive", "LaneClear!", Keys.S, KeyBindType.Press)).AddPermashow();
             Config.Add(Farm);
             
             var JungleFarm = new Menu("JungleFarm", "JungleFarm");
             JungleFarm.Add(new MenuBool("UseQJFarm", "Use Q"));
             JungleFarm.Add(new MenuBool("UseWJFarm", "Use W"));
             JungleFarm.Add(new MenuBool("UseEJFarm", "Use E"));
-            JungleFarm.Add(new MenuKeyBind("JungleFarmActive", "JungleFarm!", Keys.S, KeyBindType.Press)).Permashow();
+            JungleFarm.Add(new MenuKeyBind("JungleFarmActive", "JungleFarm!", Keys.S, KeyBindType.Press)).AddPermashow();
             Config.Add(JungleFarm);
             
             var Drawings = new Menu("Drawings", "Drawings");
@@ -213,7 +213,7 @@ namespace AIO7UP.Champions
 
             EnsoulSharp.SDK.GameEvent.OnGameTick += OnGameUpdate;
             Game.OnWndProc += OnWndProc;
-            Drawing.OnDraw += OnDraw;
+            //Drawing.OnDraw += OnDraw;
             Spellbook.OnCastSpell += OnCastSpell;
             AIBaseClient.OnProcessSpellCast += OnProcessSpellCast;
             Interrupter.OnInterrupterSpell += OnInterrupterSpell;
@@ -819,7 +819,7 @@ namespace AIO7UP.Champions
             }
         }
         
-        private static void OnDraw(EventArgs args)
+        /*private static void OnDraw(EventArgs args)
         {
             var qCircle = Config["Drawings"].GetValue<MenuBool>("QRange");
             if (Config["Drawings"].GetValue<MenuBool>("QRange").Enabled)
@@ -846,6 +846,6 @@ namespace AIO7UP.Champions
             {
                 Render.Circle.DrawCircle(OriannaBallManager.BallPosition, Q.Width, System.Drawing.Color.DodgerBlue, 5, true);
             }
-        }
+        }*/
     }
 }

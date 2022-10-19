@@ -188,7 +188,7 @@ namespace AIO7UP.Champions
             Config.Attach();
             
             GameEvent.OnGameTick += OnGameUpdate;
-            Drawing.OnDraw += OnDraw;
+            //Drawing.OnDraw += OnDraw;
             Interrupter.OnInterrupterSpell += OnInterrupterSpell;
             AntiGapcloser.OnGapcloser += OnGapcloser;
             Orbwalker.OnBeforeAttack += OnBeforeAttack;
@@ -385,7 +385,7 @@ namespace AIO7UP.Champions
             }
         }
         
-        private static void OnDraw(EventArgs args)
+        /*private static void OnDraw(EventArgs args)
         {
             if (ObjectManager.Player.IsDead)
                 return;
@@ -400,7 +400,7 @@ namespace AIO7UP.Champions
                     Render.Circle.DrawCircle(ObjectManager.Player.Position, spell.Range, menuColor.Color.ToSystemColor());
                 }
             }
-        }
+        }*/
 
         private static void OnCombo()
         {

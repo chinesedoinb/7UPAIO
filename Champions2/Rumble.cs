@@ -116,7 +116,7 @@ namespace ElRumble
             return damage;
         }
 
-        public static void OnDraw(EventArgs args)
+        /*public static void OnDraw(EventArgs args)
         {
             var drawQ = getMenuBoolItem(ElRumbleMenu.miscMenu, "ElRumble.Draw.Q");
             var drawE = getMenuBoolItem(ElRumbleMenu.miscMenu, "ElRumble.Draw.E");
@@ -199,7 +199,7 @@ namespace ElRumble
                     }
                 }
             }
-        }
+        }*/
 
         public static void OnLoad()
         {
@@ -216,7 +216,7 @@ namespace ElRumble
 
             ElRumbleMenu.Initialize();
             Game.OnUpdate += OnUpdate;
-            Drawing.OnDraw += OnDraw;
+            //Drawing.OnDraw += OnDraw;
         }
 
         #endregion

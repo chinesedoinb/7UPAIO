@@ -60,10 +60,10 @@ namespace AIO7UP.Champions
             HarassMenu.Add(new MenuBool("harassQ", "Use Q"));
             HarassMenu.Add(new MenuSlider("harassQPercent", "Use Q until Mana %", 15));
             HarassMenu.Add(new MenuBool("harassQLasthit", "Prioritize Last Hit"));
-            HarassMenu.Add(new MenuKeyBind("harassQToggle", "Toggle Q", Keys.G, KeyBindType.Toggle)).Permashow();
+            HarassMenu.Add(new MenuKeyBind("harassQToggle", "Toggle Q", Keys.G, KeyBindType.Toggle)).AddPermashow();
             MenuRyze.Add(HarassMenu);
             LaneClearMenu = new Menu("LaneClear Settings", "LaneClear");
-            LaneClearMenu.Add(new MenuList("farmQ", "Use Q", new[] { "Last Hit", "Lane Clear", "Both", "No" }, 1)).Permashow();
+            LaneClearMenu.Add(new MenuList("farmQ", "Use Q", new[] { "Last Hit", "Lane Clear", "Both", "No" }, 1)).AddPermashow();
             LaneClearMenu.Add(new MenuBool("farmE", "Use E in Lane Clear"));
             LaneClearMenu.Add(new MenuBool("farmAA", "Use AA in Lane Clear"));
             LaneClearMenu.Add(new MenuSlider("farmQPercent", "Use Q until Mana %", 10));

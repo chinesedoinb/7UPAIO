@@ -44,7 +44,7 @@ namespace AIO7UP.Champions
 
             var MenuRyze = new Menu("Leblanc", "[7UP]Leblanc", true);
             ComboMenu = new Menu("Combo Settings", "Combo");
-            ComboMenu.Add(new MenuList("ComboMode", "Combo Mode: ", new[] { "Q+R+W+E", "Q+W+R+E", "W+Q+R+E" }, 0)).Permashow();
+            ComboMenu.Add(new MenuList("ComboMode", "Combo Mode: ", new[] { "Q+R+W+E", "Q+W+R+E", "W+Q+R+E" }, 0)).AddPermashow();
             //ComboMenu.Add(new MenuKeyBind("switch", "Switch Mode", Keys.G, KeyBindType.Press)).Permashow();
             ComboMenu.Add(new MenuBool("UseQCombo", "Use Q").SetValue(true));
             ComboMenu.Add(new MenuBool("UseWCombo", "Use W").SetValue(true));
@@ -60,7 +60,7 @@ namespace AIO7UP.Champions
             HarassMenu.Add(new MenuBool("UseRHarass", "Use R").SetValue(false));
             HarassMenu.Add(new MenuBool("UseWQHarass", "Use W+Q Out Range").SetValue(true));
             HarassMenu.Add(new MenuBool("BackHarass", "Back W end Harass").SetValue(true));
-            HarassMenu.Add(new MenuKeyBind("harassToggleQ", "Use Q (toggle)", Keys.T, KeyBindType.Toggle)).Permashow();
+            HarassMenu.Add(new MenuKeyBind("harassToggleQ", "Use Q (toggle)", Keys.T, KeyBindType.Toggle)).AddPermashow();
             MenuRyze.Add(HarassMenu);
             LaneClearMenu = new Menu("LaneClear Settings", "LaneClear");
             LaneClearMenu.Add(new MenuBool("UseQFarm", "Use Q"));
@@ -79,13 +79,13 @@ namespace AIO7UP.Champions
             drawMenu.Add(new MenuBool("DrawE", "Draw E").SetValue(true));
             MenuRyze.Add(drawMenu);
             MenuRyze.Attach();
-            Drawing.OnDraw += Drawing_OnDraw;
+            //Drawing.OnDraw += Drawing_OnDraw;
             Game.OnUpdate += Game_OnUpdate;
             AntiGapcloser.OnGapcloser += Gapcloser_OnGapcloser;
             Interrupter.OnInterrupterSpell += Interrupter_OnPossibleToInterrupt;
         }
 
-        private static void Drawing_OnDraw(EventArgs args)
+        /*private static void Drawing_OnDraw(EventArgs args)
         {
             if (drawMenu["DrawQ"].GetValue<MenuBool>().Enabled && Q.IsReady())
             {
@@ -99,7 +99,7 @@ namespace AIO7UP.Champions
             {
                 Render.Circle.DrawCircle(Player.Position, E.Range, E.IsReady() ? Color.Aqua : Color.Red);
             }
-        }
+        }*/
 
         private static void Game_OnUpdate(EventArgs args)
         {

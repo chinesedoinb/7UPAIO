@@ -70,13 +70,13 @@ namespace AIO7UP.Champions
             Config.Add(menuLC);
 
             var menuM = new Menu("Msettings", "Misc ");
-            menuM.Add(new MenuKeyBind("wardJump", "Ward jump", Keys.Z, KeyBindType.Press)).Permashow();
+            menuM.Add(new MenuKeyBind("wardJump", "Ward jump", Keys.Z, KeyBindType.Press)).AddPermashow();
 
             Config.Add(menuM);
             Config.Attach();
             
             GameEvent.OnGameTick += OnGameUpdate;
-            Drawing.OnDraw += OnDraw;
+            //Drawing.OnDraw += OnDraw;
             Dash.OnDash += OnDash;
             Orbwalker.OnAfterAttack += OnAfterAttack;
         }
@@ -150,7 +150,7 @@ namespace AIO7UP.Champions
             }
         }
         
-        private static void OnDraw(EventArgs args)
+        /*private static void OnDraw(EventArgs args)
         {
             if (Config["dsettings"].GetValue<MenuBool>("drawqq").Enabled)
             {
@@ -160,7 +160,7 @@ namespace AIO7UP.Champions
             {
                 Render.Circle.DrawCircle(ObjectManager.Player.Position, E.Range, System.Drawing.Color.DodgerBlue);
             }
-        }
+        }*/
         
         private static bool Eactive => ObjectManager.Player.HasBuff("JaxCounterStrike");
 

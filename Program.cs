@@ -3,7 +3,7 @@ using EnsoulSharp;
 using EnsoulSharp.SDK;
 using AIO7UP.Champions;
 using ElRumble;
-
+using EnsoulSharp.SDK.Damages.Spells;
 
 namespace AIO7UP
 {
@@ -81,6 +81,15 @@ namespace AIO7UP
                         break;
                     case "Taliyah":
                         Taliyah.OnGameLoad();
+                        break;
+                    case "Taric":
+                        Taric.OnGameLoad();
+                        break;
+                    case "Sejuani":
+                        Sejuani.OnGameLoad();
+                        break;
+                    case "Sett":
+                        Sett.OnGameLoad();
                         break;
                     case "Shyvana":
                         Shyvana.OnGameLoad();

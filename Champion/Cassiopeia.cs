@@ -107,7 +107,7 @@ namespace AIO7UP.Champions
             MenuRyze.Add(draw);
             MenuRyze.Attach();
 
-            Drawing.OnDraw += Drawing_OnDraw;
+            //Drawing.OnDraw += Drawing_OnDraw;
             Game.OnUpdate += Game_OnUpdate;
             Game.OnWndProc += Game_OnWndProc;
             AntiGapcloser.OnGapcloser += AntiGapcloser_OnEnemyGapcloser;
@@ -121,7 +121,7 @@ namespace AIO7UP.Champions
             var buff = target.Buffs.OrderByDescending(x => x.EndTime).FirstOrDefault(x => x.Type == BuffType.Poison && x.IsActive && x.IsValid);
             return buff == null || time > (buff.EndTime - Game.Time) * 1000f;
         }*/
-        private static void Drawing_OnDraw(EventArgs args)
+        /*private static void Drawing_OnDraw(EventArgs args)
         {
             if (draw["drawQ"].GetValue<MenuBool>().Enabled && Q.IsReady())
             {
@@ -139,7 +139,7 @@ namespace AIO7UP.Champions
             {
                 Render.Circle.DrawCircle(ObjectManager.Player.Position, R.Range, Color.Orange, 1);
             }
-        }
+        }*/
         private static void Game_OnWndProc(GameWndEventArgs args)
         {
             if (MenuGUI.IsChatOpen)

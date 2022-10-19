@@ -114,14 +114,14 @@ namespace AIO7UP.Champions
             drawMenu.Add(new MenuBool("noti", "Show notification").SetValue(true));
             MenuRyze.Add(drawMenu);
             MenuRyze.Attach();
-            Drawing.OnDraw += Drawing_OnDraw;
+            //Drawing.OnDraw += Drawing_OnDraw;
             Game.OnUpdate += Game_OnUpdate;
             Orbwalker.OnAfterAttack += Orbwalker_BeforeAttack;
             AntiGapcloser.OnGapcloser += Gapcloser_OnGapcloser;
             AIBaseClient.OnDoCast += Obj_AI_Base_OnProcessSpellCast;
         }
 
-        private static void Drawing_OnDraw(EventArgs args)
+        /*private static void Drawing_OnDraw(EventArgs args)
         {
             var qRange = drawMenu["DrawQ"].GetValue<MenuBool>().Enabled;
             var wRange = drawMenu["DrawW"].GetValue<MenuBool>().Enabled;
@@ -182,7 +182,7 @@ namespace AIO7UP.Champions
                     Drawing.DrawLine(Drawing.WorldToScreen(Player.Position), Drawing.WorldToScreen(t.Position), 5, System.Drawing.Color.Red);
                 }
             }
-        }
+        }*/
 
         private static void Gapcloser_OnGapcloser(AIHeroClient sender, AntiGapcloser.GapcloserArgs args)
         {
