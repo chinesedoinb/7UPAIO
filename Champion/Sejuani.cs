@@ -30,6 +30,7 @@ namespace AIO7UP.Champions
             R = new Spell(SpellSlot.R, 1300);
 
             Q.SetSkillshot(0, 70, 999, false, SpellType.Line);
+		W.SetSkillshot(1, 25, 200, false, SpellType.Line);
             R.SetSkillshot(250, 220, 1600, false, SpellType.Line);
 
             Ignite = new Spell(ObjectManager.Player.GetSpellSlot("summonerdot"), 600);

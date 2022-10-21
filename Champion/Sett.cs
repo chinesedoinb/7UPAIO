@@ -1,4 +1,4 @@
-using System;
+	using System;
 using System.ComponentModel;
 using System.Linq;
 using EnsoulSharp;
@@ -194,16 +194,17 @@ namespace AIO7UP.Champions
             var useE = ComboMenu["useE"].GetValue<MenuBool>().Enabled;
             if (target != null)
             {
-                    if (useQ && Q.IsReady() && Orbwalker.ActiveMode == OrbwalkerMode.Combo || Orbwalker.ActiveMode == OrbwalkerMode.Harass)
-                    {
-                        Q.Cast();
-                        Orbwalker.ResetAutoAttackTimer();
-                    }
                     if (useE && E.IsReady() && E.GetPrediction(target).Hitchance >= HitChance.High && Orbwalker.ActiveMode == OrbwalkerMode.Combo || Orbwalker.ActiveMode == OrbwalkerMode.Harass)
                     {
                         E.Cast(target);
                         Orbwalker.ResetAutoAttackTimer();
                     }
+                    if (useQ && Q.IsReady() && Orbwalker.ActiveMode == OrbwalkerMode.Combo || Orbwalker.ActiveMode == OrbwalkerMode.Harass)
+                    {
+                        Q.Cast();
+                        Orbwalker.ResetAutoAttackTimer();
+                    }
+
                     /*if (Orbwalker.ActiveMode == OrbwalkerMode.LaneClear)
                     {
                         foreach (var minion in GetEnemyLaneMinionsTargetsInRange(Q.Range))
@@ -249,7 +250,7 @@ namespace AIO7UP.Champions
                     }
                     if (E.IsReady() && useE && target.IsValidTarget(E.Range))
                     {
-                        E.CastIfHitchanceMinimum(target, HitChance.Medium);
+                        E.CastIfHitchanceMinimum(target, HitChance.High);
                     }
                     if (Q.IsReady() && useQ && target.IsValidTarget(Q.Range))
                     {
@@ -407,7 +408,7 @@ namespace AIO7UP.Champions
             var KsW = KillStealMenu["killstealW"].GetValue<MenuBool>().Enabled;
             var KsE = KillStealMenu["killstealE"].GetValue<MenuBool>().Enabled;
             var KsR = KillStealMenu["killstealR"].GetValue<MenuBool>().Enabled;
-            foreach (var target in GameObjects.EnemyHeroes.Where(hero => hero.IsValidTarget(W.Range) && !hero.HasBuff("JudicatorIntervention") && !hero.HasBuff("kindredrnodeathbuff") && !hero.HasBuff("Undying Rage") && !hero.HasBuff("FioraW") && !hero.HasBuff("BlitzcrankManaBarrierCO")))
+            foreach (var target in GameObjects.EnemyHeroes.Where(hero => hero.IsValidTarget(W.Range) && !hero.HasBuff("JudicatorIntervention") && !hero.HasBuff("kindredrnodeathbuff") && !hero.HasBuff("Undying Rage") && !hero.HasBuff("FioraW") && !hero.HasBuff("BlitzcrankManaBarrierCO") && !hero.HasBuff("SionPassiveZombie")))
             {
                 if (KsQ && Q.IsReady())
                 {
