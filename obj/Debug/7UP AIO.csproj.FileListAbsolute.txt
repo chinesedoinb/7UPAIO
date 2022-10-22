@@ -1,0 +1,19 @@
+C:\Users\Admin\Desktop\7UPAIO\bin\Release\7UPAIO.exe
+C:\Users\Admin\Desktop\7UPAIO\bin\Release\7UPAIO.pdb
+C:\Users\Admin\Desktop\7UPAIO\bin\Release\EnsoulSharp.dll
+C:\Users\Admin\Desktop\7UPAIO\bin\Release\EnsoulSharp.SDK.dll
+C:\Users\Admin\Desktop\7UPAIO\bin\Release\log4net.dll
+C:\Users\Admin\Desktop\7UPAIO\bin\Release\Newtonsoft.Json.dll
+C:\Users\Admin\Desktop\7UPAIO\bin\Release\SharpDX.Direct3D9.dll
+C:\Users\Admin\Desktop\7UPAIO\bin\Release\SharpDX.dll
+C:\Users\Admin\Desktop\7UPAIO\bin\Release\SharpDX.Mathematics.dll
+C:\Users\Admin\Desktop\7UPAIO\bin\Release\SharpDX.Direct3D11.dll
+C:\Users\Admin\Desktop\7UPAIO\bin\Release\SharpDX.DXGI.dll
+C:\Users\Admin\Desktop\7UPAIO\bin\Release\SharpDX.Direct2D1.dll
+C:\Users\Admin\Desktop\7UPAIO\bin\Release\EnsoulSharp.xml
+C:\Users\Admin\Desktop\7UPAIO\obj\Debug\7UP AIO.csproj.AssemblyReference.cache
+C:\Users\Admin\Desktop\7UPAIO\obj\Debug\7UP AIO.csproj.SuggestedBindingRedirects.cache
+C:\Users\Admin\Desktop\7UPAIO\obj\Debug\7UP AIO.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Desktop\7UPAIO\obj\Debug\7UP AIO.csproj.CopyComplete
+C:\Users\Admin\Desktop\7UPAIO\obj\Debug\7UPAIO.exe
+C:\Users\Admin\Desktop\7UPAIO\obj\Debug\7UPAIO.pdb

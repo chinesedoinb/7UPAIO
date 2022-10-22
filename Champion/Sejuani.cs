@@ -30,11 +30,11 @@ namespace AIO7UP.Champions
             R = new Spell(SpellSlot.R, 1300);
 
             Q.SetSkillshot(0, 70, 999, false, SpellType.Line);
-		W.SetSkillshot(1, 25, 200, false, SpellType.Line);
+            W.SetSkillshot(0, int.MaxValue, 200, false, SpellType.Line);
             R.SetSkillshot(250, 220, 1600, false, SpellType.Line);
 
             Ignite = new Spell(ObjectManager.Player.GetSpellSlot("summonerdot"), 600);
-            var MenuRyze = new Menu("Sett", "[7UP]Sett", true);
+            var MenuRyze = new Menu("Sejuani", "[7UP]Sejuani", true);
             ComboMenu = new Menu("Combo Settings", "Combo");
             ComboMenu.Add(new MenuBool("useQ", "Use Q"));
             ComboMenu.Add(new MenuBool("useW", "Use W"));
@@ -42,7 +42,6 @@ namespace AIO7UP.Champions
             ComboMenu.Add(new MenuBool("useR", "Use R"));
             ComboMenu.Add(new MenuSlider("RCount", "R Count >=", 2, 1, 5));
             ComboMenu.Add(new MenuKeyBind("SemiR", "Semi R", Keys.R, KeyBindType.Press));
-            //ComboMenu.Add(new MenuBool("useorb", "Use Orb fixed by ProDragon"));
             MenuRyze.Add(ComboMenu);
             Misc = new Menu("Misc Settings", "Misc");
             Misc.Add(new MenuBool("interrupterQ", "Interrupter Q"));
@@ -52,10 +51,6 @@ namespace AIO7UP.Champions
             MenuRyze.Add(Misc);
             KillStealMenu = new Menu("KillSteal Settings", "KillSteal");
             KillStealMenu.Add(new MenuSeparator("KillSteal Settings", "KillSteal Settings"));
-            KillStealMenu.Add(new MenuBool("killstealQ", "Use Q"));
-            KillStealMenu.Add(new MenuBool("killstealW", "Use W"));
-            KillStealMenu.Add(new MenuBool("killstealE", "Use E"));
-            KillStealMenu.Add(new MenuBool("killstealR", "Use R"));
             KillStealMenu.Add(new MenuBool("ign", "Use [Ignite] KillSteal"));
             MenuRyze.Add(KillStealMenu);
             MenuRyze.Attach();
@@ -70,11 +65,6 @@ namespace AIO7UP.Champions
             {
                 return;
             }
-            /*if (ComboMenu["useorb"].GetValue<MenuBool>().Enabled)
-            {
-                orbfixed();
-                //orbfixed2();
-            }*/
             switch (Orbwalker.ActiveMode)
             {
                 case OrbwalkerMode.Combo:
@@ -92,31 +82,6 @@ namespace AIO7UP.Champions
             SemiKey();
 
         }
-
-        /*private static void orbfixed()
-        {
-            if (Orbwalker.ActiveMode == OrbwalkerMode.Combo)
-            {
-                var target = TargetSelector.GetTarget(Player.GetRealAutoAttackRange(Player), DamageType.Physical);
-                if (target != null && Player.GetRealAutoAttackRange() > 160)
-                {
-                    Orbwalker.ResetAutoAttackTimer();
-                    Orbwalker.Attack(target);
-                    return;
-                }
-            }
-        }
-        private static void orbfixed2()
-        {
-            if (Orbwalker.ActiveMode == OrbwalkerMode.Combo || Orbwalker.ActiveMode == OrbwalkerMode.Harass || Orbwalker.ActiveMode == OrbwalkerMode.LaneClear || Orbwalker.ActiveMode == OrbwalkerMode.LastHit)
-            {
-                if (Player.GetRealAutoAttackRange() > 160)
-                {
-                    Orbwalker.ResetAutoAttackTimer();
-                    return;
-                }
-            }
-        }*/
         private static void Gapcloser_OnGapcloser(AIHeroClient sender, AntiGapcloser.GapcloserArgs args)
         {
             if (!sender.IsValidTarget(Q.Range))
@@ -129,8 +94,8 @@ namespace AIO7UP.Champions
                 return;
             }
 
-            var useQ = Misc["gapQ"].GetValue<MenuBool>().Enabled;
-            var useR = Misc["gapR"].GetValue<MenuBool>().Enabled;
+            var useQ = Misc["interrupterQ"].GetValue<MenuBool>().Enabled;
+            var useR = Misc["interrupterR"].GetValue<MenuBool>().Enabled;
 
             if (sender.IsValidTarget(Q.Range))
             {
@@ -152,16 +117,25 @@ namespace AIO7UP.Champions
                 return;
             }
 
+            var useQ = Misc["gapQ"].GetValue<MenuBool>().Enabled;
+            var useR = Misc["gapR"].GetValue<MenuBool>().Enabled;
+
             if (sender.IsValidTarget(Q.Range) && args.DangerLevel == Interrupter.DangerLevel.High
-                && Q.IsReady())
+                && Q.IsReady() && useQ)
             {
                 Q.Cast(sender);
             }
+
+            if (sender.IsValidTarget(Q.Range) && args.DangerLevel == Interrupter.DangerLevel.High && R.IsReady() && useR)
+            {
+                R.Cast(sender);
+            }
+
         }
-        private static bool IsFrozen(AIBaseClient target)
+        /*private static bool IsFrozen(AIBaseClient target)
         {
             return target.HasBuff("SejuaniFrost");
-        }
+        }*/
         public static void Combo()
         {
             var target = TargetSelector.GetTarget(R.Range, DamageType.Magical);
@@ -176,26 +150,18 @@ namespace AIO7UP.Champions
             var comboR = ComboMenu["useR"].GetValue<MenuBool>().Enabled;
             var countEnemyR = ComboMenu["RCount"].GetValue<MenuSlider>().Value;
             //var countEnemyE = ElSejuaniMenu.Menu.Item("ElSejuani.Combo.E.Count").GetValue<Slider>().Value;
+            
 
+            if (comboW && W.IsReady() && target.IsValidTarget(W.Range))
+            {
+                W.Cast(target);
+            }
             if (comboQ && Q.IsReady() && target.IsValidTarget(Q.Range))
             {
                 Q.Cast(target);
             }
-
-            if (comboW && W.IsReady() && target.IsValidTarget(W.Range))
+            if (comboE && E.IsReady() && /*IsFrozen(target) &&*/ target.IsValidTarget(E.Range))
             {
-                W.Cast();
-            }
-
-            if (comboE && E.IsReady() && IsFrozen(target) && target.IsValidTarget(E.Range))
-            {
-                if (IsFrozen(target))
-                {
-                    E.Cast();
-                }
-
-                if (IsFrozen(target)
-                    && target.ServerPosition.Distance(Player.ServerPosition) <= E.Range)
                 {
                     E.Cast();
                 }
@@ -240,10 +206,10 @@ namespace AIO7UP.Champions
 
             if (!R.IsReady() || !target.IsValidTarget(R.Range))
             {
-                return;
+                R.Cast(target);
             }
 
-            R.Cast(target);
+            
 
         }
 
@@ -293,7 +259,7 @@ namespace AIO7UP.Champions
         }*/
 
 
-        private static float getDamage(AIBaseClient target, bool q = false, bool w = false, bool e = false, bool r = false, bool ignite = false)
+        /*private static float getDamage(AIBaseClient target, bool q = false, bool w = false, bool e = false, bool r = false, bool ignite = false)
         {
             float damage = 0;
 
@@ -330,7 +296,7 @@ namespace AIO7UP.Champions
                 damage = damage * 0.7f;
 
             return damage;
-        }
+        }*/
 
         public static double QDamage(AIBaseClient target)
         {
@@ -369,7 +335,7 @@ namespace AIO7UP.Champions
             var KsE = KillStealMenu["killstealE"].GetValue<MenuBool>().Enabled;
             foreach (var target in GameObjects.EnemyHeroes.Where(hero => hero.IsValidTarget(W.Range) && !hero.HasBuff("JudicatorIntervention") && !hero.HasBuff("kindredrnodeathbuff") && !hero.HasBuff("Undying Rage") && !hero.HasBuff("FioraW") && !hero.HasBuff("BlitzcrankManaBarrierCO")))
             {
-                if (KsQ && Q.IsReady())
+                /*if (KsQ && Q.IsReady())
                 {
                     if (target != null)
                     {
@@ -393,7 +359,7 @@ namespace AIO7UP.Champions
                 {
                     if (target != null)
                     {
-                        if (target.Health + target.AllShield <= WDamage(target))/*try*/
+                        if (target.Health + target.AllShield <= WDamage(target))/*try
                         {
                             W.Cast(target);
                         }
@@ -403,12 +369,12 @@ namespace AIO7UP.Champions
                 {
                     if (target != null)
                     {
-                        if (target.Health + target.AllShield <= EDamage(target))/*try*/
+                        if (target.Health + target.AllShield <= EDamage(target))/*try
                         {
                             E.Cast(target);
                         }
                     }
-                }
+                }*/
                 if (Ignite != null && KillStealMenu["ign"].GetValue<MenuBool>().Enabled && Ignite.IsReady())
                 {
                     if (target.Health + target.AllShield < Player.GetSummonerSpellDamage(target, SummonerSpell.Ignite))
