@@ -32,10 +32,10 @@ namespace ElRumble
 
         public static Dictionary<Spells, Spell> spells = new Dictionary<Spells, Spell>
                                                              {
-                                                                 { Spells.Q, new Spell(SpellSlot.Q, 500) },
+                                                                 { Spells.Q, new Spell(SpellSlot.Q, 600) },
                                                                  { Spells.W, new Spell(SpellSlot.W, 0) },
                                                                  { Spells.E, new Spell(SpellSlot.E, 950) },
-                                                                 { Spells.R, new Spell(SpellSlot.R, 1700) },
+                                                                 { Spells.R, new Spell(SpellSlot.R, 1135) },
                                                                  { Spells.R1, new Spell(SpellSlot.R, 800) }
                                                              };
 

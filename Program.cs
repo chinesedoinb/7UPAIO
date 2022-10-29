@@ -34,6 +34,9 @@ namespace AIO7UP
                     case "Ekko":
                         Ekko.OnGameLoad();
                         break;
+                    case "Ezreal":
+                        Ezreal.OnGameLoad();
+                        break;
                     case "Hecarim":
                         Hecarim.OnGameLoad();
                         break;
