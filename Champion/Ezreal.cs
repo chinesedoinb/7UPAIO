@@ -29,13 +29,10 @@ namespace AIO7UP.Champions
             if (!Player.CharacterName.Contains("Ezreal")) return;
             Bootstrap.Init(null);
             Q = new Spell(SpellSlot.Q, 1200f);
-            Q.SetSkillshot(0.25f, 60f, 2000f, true, SpellType.Line);
-
+            Q.SetSkillshot(0.25f, 55f, 2000f, true, SpellType.Line);
             W = new Spell(SpellSlot.W, 1200f);
-            W.SetSkillshot(0.25f, 60f, 1700f, false, SpellType.Line);
-
+            W.SetSkillshot(0.25f, 55f, 1700f, false, SpellType.Line);
             E = new Spell(SpellSlot.E, 475f) { Delay = 0.65f };
-
             R = new Spell(SpellSlot.R, 5000f);
             R.SetSkillshot(1f, 160f, 2200f, false, SpellType.Line);
 
@@ -65,7 +62,7 @@ namespace AIO7UP.Champions
             JungleClearMenu = new Menu("Jungle Settings", "Jungle Clear");
             JungleClearMenu.Add(new MenuBool("useQ", "Use Q"));
             JungleClearMenu.Add(new MenuBool("useW", "Use W"));
-            JungleClearMenu.Add(new MenuSlider("Mana Clear", "Mana Clear", 15));
+            JungleClearMenu.Add(new MenuSlider("ManaCL", "Mana Clear", 15));
             MenuRyze.Add(JungleClearMenu);
             RMenu = new Menu("R Settings", "RMenu");
             RMenu.Add(new MenuBool("AutoR", "Auto R"));
@@ -500,10 +497,26 @@ namespace AIO7UP.Champions
             //var JcQq = Config["Clear"].GetValue<MenuBool>("JcQ");
             var mobs = GameObjects.Jungle.Where(x => x.IsValidTarget(Q.Range)).OrderBy(x => x.MaxHealth)
                 .ToList<AIBaseClient>();
-            if (mobs.Count > 0)
+            var target = GameObjects.GetJungles(Player.ServerPosition, Q.Range);
+            foreach (var obj in target)
             {
-                var mob = mobs[0];
-                if (useQ && Q.IsReady() && Player.Distance(mob.Position) < Q.Range) Q.Cast(mob.Position);
+                if (useW && W.IsReady() && obj.IsValidTarget(W.Range))
+                {
+                    if (obj.GetJungleType() >= JungleType.Legendary)
+                    {
+                        var predpos = W.GetPrediction(obj, false, -1, new CollisionObjects[] { CollisionObjects.YasuoWall, CollisionObjects.Heroes });
+                        if (predpos.Hitchance >= HitChance.High)
+                        {
+                            W.Cast(predpos.CastPosition);
+                        }
+                    }
+                }
+
+                if (mobs.Count > 0)
+                {
+                    var mob = mobs[0];
+                    if (useQ && Q.IsReady() && Player.Distance(mob.Position) < Q.Range) Q.Cast(mob.Position);
+                }
             }
         }
 
