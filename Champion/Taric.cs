@@ -65,7 +65,6 @@ namespace AIO7UP.Champions
 
 
             Game.OnUpdate += Game_OnUpdate;
-            Game.OnWndProc += (a) =>;
             AntiGapcloser.OnGapcloser += AntiGapcloser_OnEnemyGapcloser;
             Interrupter.OnInterrupterSpell += Interrupter2_OnInterruptableTarget;
             Orbwalker.OnBeforeAttack += Orbwalker_OnBeforeAttack;
