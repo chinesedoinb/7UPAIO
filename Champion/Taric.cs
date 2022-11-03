@@ -65,6 +65,7 @@ namespace AIO7UP.Champions
 
 
             Game.OnUpdate += Game_OnUpdate;
+            Game.OnWndProc += (a) =>;
             AntiGapcloser.OnGapcloser += AntiGapcloser_OnEnemyGapcloser;
             Interrupter.OnInterrupterSpell += Interrupter2_OnInterruptableTarget;
             Orbwalker.OnBeforeAttack += Orbwalker_OnBeforeAttack;
@@ -176,7 +177,7 @@ namespace AIO7UP.Champions
             if (ComboMenu["UseECombo"].GetValue<MenuBool>().Enabled && E.IsReady()
                 && target.IsValidTarget(E.Range))
             {
-                E.Cast(target);
+                E.Cast(new Vector3(0, 0, 0));
             }
 
             if (ComboMenu["UseWCombo"].GetValue<MenuBool>().Enabled && W.IsReady()
